@@ -1,0 +1,19 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="demo-padding demo-container">
+  <oj-label>
+    <h3><oj-bind-text value="Alternative table of HFH"></oj-bind-text></h3>
+  </oj-label>
+  <oj-label>
+    <oj-bind-text value="(If there are no Caps, Subs, HFH Chips)"></oj-bind-text>
+  </oj-label>
+  <oj-table id="tableHfh" aria-label="HFH data" data='[[hfhObservable]]'
+  selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
+  scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team Name", 
+    "field": "team"},
+    {"headerText": "Total Score", 
+                    "field": "score"}]' style='width: 500px; height:100%;'>
+  </oj-table>
+</div>
