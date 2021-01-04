@@ -5,7 +5,7 @@
 <div class="demo-padding demo-container">
 
   <oj-label>
-    <h3><oj-bind-text value="Cap, Sub Quota and VC Counts"></oj-bind-text></h3>
+    <h2><oj-bind-text value="Cap, Sub Quota and VC Counts"></oj-bind-text></h2>
   </oj-label>
 
   <oj-table id="table" aria-label="Players Played" data='[[capQuotaObservable]]'
@@ -22,7 +22,8 @@
 
 
 <oj-label>
-  <h3><oj-bind-text value="Live Players Remaining"></oj-bind-text></h3>
+  <h2><oj-bind-text value="Live Players Remaining"></oj-bind-text></h2>
+  <h9><oj-bind-text value="Note: Players with 0 points are now counted as not played, will be fixed in due course"></oj-bind-text></h9>
 </oj-label>
 
 <oj-table id="table" aria-label="Players Played" data='[[playersPlayedObservable]]'
@@ -59,7 +60,7 @@
 
 
   <oj-label>
-    <h3><oj-bind-text value="AOE EO Table"></oj-bind-text></h3>
+    <h2><oj-bind-text value="AOE EO Table"></oj-bind-text></h2>
   </oj-label>
 
   <oj-table id="eotable" aria-label="AOE EO data" data='[[eoDataProvider]]'
@@ -73,7 +74,7 @@
   </oj-table>
 
   <oj-label>
-    <h3><oj-bind-text value="Individual Chip Usage Status (per AOE team)"></oj-bind-text></h3>
+    <h2><oj-bind-text value="Individual Chip Usage Status (per AOE team)"></oj-bind-text></h2>
   </oj-label>
 
   <oj-table id="chipTable" aria-label="FPL Chip data" data='[[chipDataProvider]]'

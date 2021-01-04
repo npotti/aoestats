@@ -28,17 +28,17 @@ class DashboardViewModel {
   mostFPLCaptained: ko.Observable = ko.observable();
   mostFPLTransferredOut: ko.Observable = ko.observable();
   mostAOETransferredIn: ko.Observable = ko.observable();
-  mostAOECaptained: ko.Observable = ko.observable();
+  aoeCaptained: ko.Observable = ko.observable();
   mostAOETransferredOut: ko.Observable = ko.observable();
-  fplPlayerMap = new Map();
   aoePlayerMap = new Map();
   aoeTeams: AoeTeam[] = [];
-  curr_gw: number = 15;
+  curr_gw: number = 1;
   gwTransInMap = new Map();
   gwTransOutMap = new Map();
+  gwCapsMap = new Map();
+  gwCapInfo: ko.Observable = ko.observable();
   captainMap = new Map();
   aoeGwPlayerTransfers = new Map();
-  fplTeamsMap = new Map();
   loadTransTable: ko.Observable<boolean> = ko.observable(false);
   playerChipMap = new Map();
   playerCaptainMap = new Map();
@@ -50,17 +50,20 @@ class DashboardViewModel {
 
   constructor() {
     const promises = [];
-    const promise = this.fetchFPLPlayers();
+    const promise = CommonUtils.fetchFPLPlayers();
     const promise2 = this.fetchFplChipCounts();
     const promise3 = CommonUtils.fetchAoeTeams();
     const promise4 = this.fetchAoeScores();
+    const promise5 = CommonUtils.fetchCurrGW();
     this.fetchFplHits();
     promises.push(promise);
     promises.push(promise2);
     promises.push(promise3);
     promises.push(promise4);
+    promises.push(promise5);
 
     Promise.all(promises).then(resolve =>{
+      this.curr_gw = CommonUtils.curr_gw;
       for (let entry of Array.from(this.aoePlayerMap.entries())) {
         let name = entry[0];
         let fpl_id = entry[1];
@@ -122,6 +125,7 @@ class DashboardViewModel {
   }
 
   onLoadTransferTable = (event: ojButtonEventMap['ojAction']) => {
+    this.transferTableList.removeAll();
     
     for (let entry of Array.from(this.aoeGwPlayerTransfers.entries())) {
 
@@ -129,19 +133,22 @@ class DashboardViewModel {
 
       let livePoints: Number = this.aoeLiveScoreMap.get(this.aoePlayerMap.get(entry[0]));
       // let livePoints = 0;
-      let totalPoints = currPoints.valueOf() + livePoints.valueOf();
+      let totalPoints = currPoints.valueOf();
+      if(!CommonUtils.finished){
+        totalPoints = totalPoints + livePoints.valueOf();
+      }
 
 
-      let ele = {"player": entry[0], "info" : entry[1], "chip" : this.playerChipMap.get(entry[0]), "captain" : this.playerCaptainMap.get(entry[0]), "vicecaptain" : this.playerViceCaptainMap.get(entry[0]), "rank" : this.playerRankMap.get(entry[0]).overall_rank, "hits": ((this.playerRankMap.get(entry[0]).event_transfers_cost)/4), "tv": ((this.playerRankMap.get(entry[0]).value)/10), "points": currPoints, "livepoints": livePoints, "totalpoints" : totalPoints};
+      let ele = {"player": entry[0], "info" : entry[1], "chip" : this.playerChipMap.get(entry[0]), "captain" : this.playerCaptainMap.get(entry[0]), "vicecaptain" : this.playerViceCaptainMap.get(entry[0]), "rank" : this.playerRankMap.get(entry[0]).overall_rank, "hits": ((this.playerRankMap.get(entry[0]).event_transfers_cost)/4), "tv": ((this.playerRankMap.get(entry[0]).value)/10), "points": currPoints, "livepoints": livePoints};
 
       this.transferTableList.push(ele);
     }
 
     this.transferTableList.sort((a,b) => {
-      if(a.totalpoints > b.totalpoints){
+      if(a.rank < b.rank){
         return -1;
       }
-      if(a.totalpoints < b.totalpoints){
+      if(a.rank > b.rank){
         return 1;
       }
       return 0;
@@ -166,6 +173,20 @@ class DashboardViewModel {
 
     this.mostAOETransferredIn(mapIn.keys().next().value);
 
+    var mapCapGw = new Map([...this.gwCapsMap.entries()].sort(function(a, b) {
+      if (a[1] > b[1]) return -1;
+      if (a[1] < b[1]) return 1;
+      /* else */ return 0;
+    }));
+
+    let info: String = '';
+    for (let entry of Array.from(mapCapGw.entries())) {
+      let name = entry[0];
+      let count = entry[1];
+      info = info+name+":"+count+",";
+    }
+    this.gwCapInfo(info.substring(0, info.length-1));
+
 
     this.loadTransTable(true);
   };
@@ -179,7 +200,7 @@ class DashboardViewModel {
           const resResult: FPLTransfers[] = <FPLTransfers[]>res;
           resResult.forEach(ele => {
             if(ele.event === this.curr_gw){
-              transfersMap.set(this.fplPlayerMap.get(ele.element_in).web_name, this.fplPlayerMap.get(ele.element_out).web_name);
+              transfersMap.set(CommonUtils.fplPlayerMap.get(ele.element_in).web_name, CommonUtils.fplPlayerMap.get(ele.element_out).web_name);
             }
             resolve(transfersMap);
           })
@@ -199,38 +220,24 @@ class DashboardViewModel {
           this.playerPicksMap.set(fpl_id, picksConst.picks);
           picksConst.picks.forEach(ele => {
             if(ele.is_captain){
-              this.playerCaptainMap.set(name, this.fplPlayerMap.get(ele.element).web_name);
+              let capName = CommonUtils.fplPlayerMap.get(ele.element).web_name;
+              this.playerCaptainMap.set(name, capName);
+              if(this.gwCapsMap.has(capName)){
+                let count = this.gwCapsMap.get(capName);
+                this.gwCapsMap.set(capName, count+1);
+              }
+              else{
+                this.gwCapsMap.set(capName, 1);
+              }
             }
             else if(ele.is_vice_captain){
-              this.playerViceCaptainMap.set(name, this.fplPlayerMap.get(ele.element).web_name);
+              this.playerViceCaptainMap.set(name, CommonUtils.fplPlayerMap.get(ele.element).web_name);
             }
           })
           this.playerRankMap.set(name, picksConst.entry_history);
           resolve(true);
         });
     });
-  }
-
-  private fetchFPLPlayers(){
-    return new Promise((resolve) => {
-      let urlFinal: string = 'https://fantasy.premierleague.com/api/bootstrap-static/';
-      fetch(urlFinal).
-      then(res => res.json())
-          .then(res => {
-            const resResult: FPLBootStrap = <FPLBootStrap>res;
-            if(resResult.teams){
-              resResult.teams.forEach(team => {
-                this.fplTeamsMap.set(team.id, team);
-              })
-            }
-            if(resResult.elements){
-              resResult.elements.forEach(element => {
-                this.fplPlayerMap.set(element.id, element);
-              });
-            }
-            resolve(true);
-          })
-      })
   }
 
   private fetchFplChipCounts(){

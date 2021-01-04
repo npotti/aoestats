@@ -26,7 +26,7 @@ class CustomersViewModel {
   public chartObservableArray: ko.ObservableArray = ko.observableArray([]);
   chartObservable: ko.Observable = ko.observable();
   tallyUrl: string = 'https://fopfpl.in/aoe/api/veg_tally';
-  curr_gw = 15;
+  curr_gw = 1;
   eoTableList: ko.ObservableArray = ko.observableArray([]);
   eoDataProvider:  ko.Observable = ko.observable();
   aoePlayerMap = new Map();
@@ -34,21 +34,21 @@ class CustomersViewModel {
   chipDataProvider:  ko.Observable = ko.observable();
 
   constructor() {
+    const promise = CommonUtils.fetchCurrGW();
+    promise.then(res => {
+      this.curr_gw = <number>res;
+      this.fetchAoeEO(this.curr_gw);
+      this.vegTallyDataProvider = ko.observable(new ArrayDataProvider(this.vegTallyTableList));
+      let i=1;
+      for(i;i<=10;i++){
+        this.fetchTeamVegTally(this.curr_gw,i);
+      }
+    })
     const promise2 = this.fetchFplChipCounts();
     promise2.then(res => {
       this.chipDataProvider(new ArrayDataProvider(this.chipTableList));
     })
-    this.fetchAoeEO(this.curr_gw);
-    this.vegTallyDataProvider = ko.observable(new ArrayDataProvider(this.vegTallyTableList));
-    let i=1;
-    for(i;i<=10;i++){
-      this.fetchTeamVegTally(this.curr_gw,i);
-    }
     this.fetchCapQuota();
-  }
-
-  private roundToTwo(num) {    
-    return Math.round((num + Number.EPSILON) * 100) / 100;
   }
 
   private fetcheo(urlFinal: string, playerMap: Map<string, number>) {
@@ -175,7 +175,7 @@ class CustomersViewModel {
               let totalPlayers: number = 0;
               let remMap = new Map();
               resResult.forEach(row =>{
-                if(row.score !== 0 || row.name === 'Dias'){ //players with 0
+                if(row.score !== 0){ //players with 0
                   playersPlayed += row.count;
                 }
                 else{
@@ -237,7 +237,7 @@ class CustomersViewModel {
             let name = entry[0];
             let count = entry[1];
             let percent = ((count/60)*100);
-            let ele = {"player": name, "count" : count, "percent": this.roundToTwo(percent)};
+            let ele = {"player": name, "count" : count, "percent": CommonUtils.roundToTwo(percent)};
             this.eoTableList.push(ele);
           }
           this.eoTableList.sort((a,b) => {

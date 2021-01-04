@@ -12,6 +12,10 @@
       <h3><oj-bind-text value="Most Transferred Out"></oj-bind-text></h3>
     </oj-label>
     <oj-bind-text value="[[mostAOETransferredOut()]]"></oj-bind-text>
+    <oj-label>
+      <h3><oj-bind-text value="Captain Info"></oj-bind-text></h3>
+    </oj-label>
+    <oj-bind-text value="[[gwCapInfo()]]"></oj-bind-text>
     
 
     <h1><oj-bind-text value="Live AOE Player League Table"></oj-bind-text></h1>
@@ -55,11 +59,6 @@
                     "resizable": "enabled"},
                     {"headerText": "Live Points", 
                     "field": "livepoints",
-                    "width" : "100",
-                    "headerStyle": "white-space:pre-wrap;", 
-                    "resizable": "enabled"},
-                    {"headerText": "Total Points", 
-                    "field": "totalpoints",
                     "width" : "100",
                     "headerStyle": "white-space:pre-wrap;", 
                     "resizable": "enabled"},

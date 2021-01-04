@@ -9,4 +9,25 @@
       on-value-changed="[[valueChangedHandler]]" 
       value="{{selectedTeam}}">
   </oj-select-single>
+
+
+  <oj-bind-if test="[[showTable]]">
+  <oj-label>
+    <h3><oj-bind-text value="The Effect of Each PL Team on your AOE team"></oj-bind-text></h3>
+    <h9><oj-bind-text value="Calculation of averages is based on FPL teams of these AOE team members, so Cap VC in AOE will not effect the data."></oj-bind-text></h9>
+  </oj-label>
+
+  <oj-table id="table" aria-label="Gain Table" data='[[gainDataProvider]]'
+  selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
+  scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team", 
+  "field": "team"},
+  {"headerText": "Your Points", 
+                  "field": "count"},
+                  {"headerText": "AOE Avg", 
+                  "field": "avg"},
+                  {"headerText": "Gain", 
+                  "field": "gain"
+                  }]' style='width: 1300px; height:100%;'>
+  </oj-table>
+</oj-bind-if>
 </div>
