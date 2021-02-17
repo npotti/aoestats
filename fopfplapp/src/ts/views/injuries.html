@@ -1,0 +1,46 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page" :style.background-image = "url('css/images/injuries.jpg')";>
+    <!-- This is where your main page content will be loaded -->
+    <div class="oj-applayout-content">
+      <div role="main" class="oj-hybrid-applayout-content">
+        <div class="oj-hybrid-padding">
+          <div :class="transinjuriesbox">
+          <oj-list-view id="injurieslist" aria-label="list with injuries" data="[[injuriesDataProvider]]"
+            class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
+            <template slot="itemTemplate" data-oj-as="item">
+              <li>
+                <oj-list-item-layout>
+                  <oj-avatar slot="leading" size="md" src="[[item.data.teamlogo]]"></oj-avatar> 
+                  
+                  <div class="oj-typography-body-md oj-typography-bold">
+                    <span class="oj-badge oj-badge-danger oj-badge-subtle">0</span>
+                    <b><oj-bind-text value="[[item.data.chance0]]"></oj-bind-text></b>
+                  </div>
+                  <div slot="secondary" class="oj-typography-body-sm">
+                    <span class="oj-badge oj-badge-danger oj-badge-subtle">25</span>
+                    <b><oj-bind-text value="[[item.data.chance25]]"></oj-bind-text></b>
+                  </div>
+                  <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+                    <div>
+                      <span class="oj-badge oj-badge-warning">50</span>
+                      <b><oj-bind-text value="[[item.data.chance50]]"> </oj-bind-text></b>
+                    </div>
+                  </div>
+                  <div class="oj-typography-body-xs oj-text-color-secondary">
+                    <div>
+                      <span class="oj-badge oj-badge-warning oj-badge-subtle">75</span>
+                      <b><oj-bind-text value="[[item.data.chance75]]"> </oj-bind-text></b>
+                    </div>
+                  </div>
+                </oj-list-item-layout>
+              </li>
+            </template>
+          </oj-list-view>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

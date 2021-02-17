@@ -1,0 +1,36 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page">
+    <!-- This is where your main page content will be loaded -->
+    <div class="oj-applayout-content">
+        <div role="main" class="oj-hybrid-applayout-content">
+            <div class="oj-hybrid-padding">
+                <oj-label>
+                    <h2><oj-bind-text value="Live Player YC Ban Tracking"></oj-bind-text></h2>
+                  </oj-label>
+                
+                <div style="width: 1px; min-width: 100%;">
+                    <oj-list-view id="qualList" aria-label="qual list" data="[[ycDataProvider]]">
+                        <template slot="itemTemplate" data-oj-as="item">
+                            <li>
+                                <span :style.color="{{(item.data.count === 9 ? 'red' : 'orange')}}">
+                                <oj-list-item-layout>
+                                    <div class="oj-typography-body-md oj-typography-bold">
+                                        <b>Player :</b>
+                                        <oj-bind-text value="[[item.data.name]]" 
+                                        ></oj-bind-text>
+                                    </div>
+                                    <div slot="secondary" class="oj-typography-body-sm">
+                                        <b>Count : </b>
+                                        <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
+                                    </div>
+                                </oj-list-item-layout>
+                                </span>
+                            </li>
+                        </template>
+                    </oj-list-view>
+                </div>
+            </div>
+        </div>

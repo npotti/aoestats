@@ -1,8 +1,9 @@
 import * as ko from "knockout";
 import * as ModuleUtils from "ojs/ojmodule-element-utils";
 import * as ResponsiveUtils from "ojs/ojresponsiveutils";
-import * as  ResponsiveKnockoutUtils from "ojs/ojresponsiveknockoututils";
-import Router = require("ojs/ojrouter");
+import * as ResponsiveKnockoutUtils from "ojs/ojresponsiveknockoututils";
+import * as OffcanvasUtils from "ojs/ojoffcanvas";
+import Router = require ("ojs/ojrouter");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
@@ -13,7 +14,6 @@ class FooterLink {
   name: string;
   id: string;
   linkTarget: string;
-
   constructor( { name, id, linkTarget } : {
     name: string;
     id: string;
@@ -43,9 +43,19 @@ class NavDataItem {
 
 class RootViewModel {
   smScreen: ko.Observable<boolean>;
+  mdScreen: ko.Observable<boolean>;
   router: Router;
   moduleConfig: ko.Observable<ojModule["config"]>;
   navDataSource: ojNavigationList<string, NavDataItem>["data"];
+  drawerParams: {
+    selector: string;
+    content: string;
+    edge?: "start" | "end" | "top" | "bottom";
+    displayMode?: "push" | "overlay";
+    autoDismiss?: "focusLoss" | "none";
+    size?: string;
+    modality?: "modal" | "modeless";
+  };
   appName: ko.Observable<string>;
   userLogin: ko.Observable<string>;
   footerLinks: ko.ObservableArray<FooterLink>;
@@ -56,14 +66,30 @@ class RootViewModel {
     if (smQuery){
       this.smScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(smQuery);
     }
+
+    let mdQuery: string | null = ResponsiveUtils.getFrameworkQuery("md-up");
+    if (mdQuery){
+      this.mdScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(mdQuery);
+    }
     
     // router setup
     this.router = Router.rootInstance;
     this.router.configure({
-      "aoe": {label: "AOE", isDefault: true},
+      "dashboard": {label:"Dashboard", isDefault: true},
+      "aoe": {label: "AOE"},
       "teams": {label: "Teams"},
       "players": {label: "Players"},
-      "hfh": {label: "HFH"}
+      "hfh": {label: "HFH"},
+      "captains": {label: "Your Captain Picks"},
+      "setpieces": {label: "Set Piece Specialists"},
+      "injuries": {label: "Injuries"},
+      "aoelive": {label: "AOE Cup"},
+      "yctracking": {label: "YC Ban Tracking"},
+      "foplms": {label: "FOP LMS Tracking"},
+      "remplayers" : {label: "Live Players Remaining"},
+      "rivals": {label: "Rivals"},
+      "fff": {label: "FFF Live Tracking"},
+      "transferanalysis": {label: "Transfer Analysis"}
     });
 
     Router.defaults.urlAdapter = new Router.urlParamAdapter();
@@ -73,15 +99,54 @@ class RootViewModel {
 
     // navigation setup
     let navData: NavDataItem[] = [
+      new NavDataItem({name: "Dashboard", id: "dashboard", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-home-icon-24"}),
       new NavDataItem({name: "AOE Level Stats", id: "aoe", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24"}),
       new NavDataItem({name: "Team Level Stats", id: "teams", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24"}),
       new NavDataItem({name: "Player Level Stats", id: "players", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24"}),
-      new NavDataItem({name: "HFH (Last Season) Stats", id: "hfh", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24"})
+      new NavDataItem({name: "AOE Cup", id: "aoelive",
+      iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24"}),
+      new NavDataItem({name: "FOP LMS Tracking", id: "foplms",
+      iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-location-icon-24"}),
+      new NavDataItem({name: "YC Ban Tracking", id: "yctracking",
+      iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-location-icon-24"}),
+      new NavDataItem({name: "Set Piece Takers", id: "setpieces",
+      iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-person-icon-24"}),
+      new NavDataItem({name: "Injuries", id: "injuries",
+      iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24"}),
+      new NavDataItem({name: "Captain Picks", id: "captains",
+      iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24"}),
+      new NavDataItem({name: "Live Remaining Players", id: "remplayers", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24"}),
+      new NavDataItem({name: "Rivals", id: "rivals", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24"}),
+      new NavDataItem({name: "FFF", id: "fff", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24"}),
+      new NavDataItem({name: "Transfer Analysis", id: "transferanalysis", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24"})
     ];
-
+    
     this.navDataSource = new ArrayDataProvider(navData, {idAttribute: "id"});
 
-    // header
+    // drawer
+
+    this.drawerParams = {
+      displayMode: "push",
+      selector: "#navDrawer",
+      content: "#pageContent"
+    };
+
+    // close offcanvas on medium and larger screens
+    this.mdScreen.subscribe(() => {
+      OffcanvasUtils.close(this.drawerParams);
+    });
+
+    // add a close listener so we can move focus back to the toggle button when the drawer closes
+    let navDrawerElement: HTMLElement = document.querySelector("#navDrawer") as HTMLElement;
+    navDrawerElement.addEventListener("ojclose", () => {
+      let drawerToggleButtonElment: HTMLElement = document.querySelector("#drawerToggleButton") as HTMLElement;
+      drawerToggleButtonElment.focus();
+    });
+  }
+
+  // called by navigation drawer toggle button and after selection of nav drawer item
+  toggleDrawer = (): Promise<boolean> => {
+    return OffcanvasUtils.toggle(this.drawerParams);
   }
 
   loadModule(): void {
@@ -95,8 +160,7 @@ class RootViewModel {
       ]);
       masterPromise.then((values) => {
           this.moduleConfig({"view": values[0],"viewModel": values[1].default});
-        }
-      );
+      });
     });
   }
 }

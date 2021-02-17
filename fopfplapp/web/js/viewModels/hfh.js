@@ -1,1 +1,76 @@
-define(["require","exports","ojs/ojarraydataprovider","knockout","ojs/ojtable","ojs/ojchart"],(function(require,e,r,t){"use strict";Object.defineProperty(e,"__esModule",{value:!0});e.default=class{constructor(){this.hfhObservableArray=t.observableArray([]),this.hfhObservable=t.observable(),this.fetchHfhScores()}fetchHfhScores(){fetch("http://fopfpl.in/hfh/api/game_week/scores").then(e=>e.json()).then(e=>{let t=new Map;e.forEach(e=>{e.forEach(e=>{let r=JSON.parse(e.details),s=0;if(r.forEach(e=>{s+=e.score}),t.has(e.team.name)){let r=t.get(e.team.name);t.set(e.team.name,r+s)}else t.set(e.team.name,s)})});for(let e of Array.from(t.entries())){let r={team:e[0],score:e[1]};this.hfhObservableArray.push(r)}this.hfhObservableArray.sort((e,r)=>e.score>r.score?-1:e.score<r.score?1:0),this.hfhObservable(new r(this.hfhObservableArray))})}connected(){}disconnected(){}transitionCompleted(){}}}));
+define(["require", "exports", "ojs/ojarraydataprovider", "knockout", "ojs/ojtable", "ojs/ojchart"], function (require, exports, ArrayDataProvider, ko) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class AboutViewModel {
+        constructor() {
+            this.hfhObservableArray = ko.observableArray([]);
+            this.hfhObservable = ko.observable();
+            this.fetchHfhScores();
+        }
+        fetchHfhScores() {
+            fetch('http://fopfpl.in/hfh/api/game_week/scores').
+                then(res => res.json())
+                .then(res => {
+                let teamMap = new Map();
+                res.forEach(element => {
+                    element.forEach(teamgw => {
+                        let detailsRes = JSON.parse(teamgw.details);
+                        let teamscore = 0;
+                        detailsRes.forEach(teamsgwscore => {
+                            teamscore = teamscore + teamsgwscore.score;
+                        });
+                        if (teamMap.has(teamgw.team.name)) {
+                            let score = teamMap.get(teamgw.team.name);
+                            teamMap.set(teamgw.team.name, score + teamscore);
+                        }
+                        else {
+                            teamMap.set(teamgw.team.name, teamscore);
+                        }
+                    });
+                });
+                for (let entry of Array.from(teamMap.entries())) {
+                    let name = entry[0];
+                    let count = entry[1];
+                    let ele = { "team": name, "score": count };
+                    this.hfhObservableArray.push(ele);
+                }
+                this.hfhObservableArray.sort((a, b) => {
+                    if (a.score > b.score) {
+                        return -1;
+                    }
+                    if (a.score < b.score) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.hfhObservable(new ArrayDataProvider(this.hfhObservableArray));
+            });
+        }
+        /**
+         * Optional ViewModel method invoked after the View is inserted into the
+         * document DOM.  The application can put logic that requires the DOM being
+         * attached here.
+         * This method might be called multiple times - after the View is created
+         * and inserted into the DOM and after the View is reconnected
+         * after being disconnected.
+         */
+        connected() {
+            // implement if needed
+        }
+        /**
+         * Optional ViewModel method invoked after the View is disconnected from the DOM.
+         */
+        disconnected() {
+            // implement if needed
+        }
+        /**
+         * Optional ViewModel method invoked after transition to the new View is complete.
+         * That includes any possible animation between the old and the new View.
+         */
+        transitionCompleted() {
+            // implement if needed
+        }
+    }
+    exports.default = AboutViewModel;
+});
+//# sourceMappingURL=hfh.js.map

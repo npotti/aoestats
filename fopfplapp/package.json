@@ -1,12 +1,14 @@
 {
-  "name": "fopfplapp",
+  "name": "org.oraclejet.fopfplapp",
   "version": "1.0.0",
   "description": "An Oracle JavaScript Extension Toolkit(JET) web app",
   "dependencies": {
-    "@oracle/oraclejet": "~8.3.0"
+    "@oracle/oraclejet": "~8.3.0",
+    "cordova-sqlite-storage": "^5.1.0"
   },
   "devDependencies": {
-    "@oracle/oraclejet-tooling": "~8.3.0"
+    "@oracle/oraclejet-tooling": "~8.3.0",
+    "@types/jquery": "^3.5.5"
   },
   "engines": {
     "node": ">=0.10.0"

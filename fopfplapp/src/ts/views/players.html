@@ -7,16 +7,38 @@
     <oj-label>
       <h3><oj-bind-text value="Most Transferred In"></oj-bind-text></h3>
     </oj-label>
-    <oj-bind-text value="[[mostAOETransferredIn()]]"></oj-bind-text>
+    <oj-avatar size="md" src="[[mostAOETransferredInPic]]"></oj-avatar>
     <oj-label>
-      <h3><oj-bind-text value="Most Transferred Out"></oj-bind-text></h3>
+      <h3>
+        <oj-bind-text value="Most Transferred Out"></oj-bind-text>
+      </h3>
     </oj-label>
-    <oj-bind-text value="[[mostAOETransferredOut()]]"></oj-bind-text>
+    <oj-avatar size="md" src="[[mostAOETransferredOutPic]]"></oj-avatar>
     <oj-label>
-      <h3><oj-bind-text value="Captain Info"></oj-bind-text></h3>
+      <h3>
+        <oj-bind-text value="Captain Info"></oj-bind-text>
+      </h3>
     </oj-label>
-    <oj-bind-text value="[[gwCapInfo()]]"></oj-bind-text>
-    
+   
+
+    <div id='chart-container'>
+      <oj-chart id="pieChart"
+          type="pie" 
+          data="[[mostAoeCappedDataProvider]]"
+          animation-on-display="auto"
+          animation-on-data-change="auto"
+          style-defaults.three-d-effect="off"
+          hover-behavior="dim">
+  
+          <template slot='itemTemplate' data-oj-as='item'>
+              <oj-chart-item 
+                value='[[item.data.count]]'
+                group-id='[[[item.data.group]]]'
+                series-id='[[item.data.name]]'> 
+              </oj-chart-item>
+          </template>
+      </oj-chart>
+    </div>
 
     <h1><oj-bind-text value="Live AOE Player League Table"></oj-bind-text></h1>
 
@@ -66,7 +88,7 @@
                     "field": "tv",
                     "width" : "100",
                     "headerStyle": "white-space:pre-wrap;", 
-                    "resizable": "enabled"}]' style='width: 100%; height:100%;'>
+                    "resizable": "enabled"}]'>
     </oj-table>
   </oj-bind-if>
 
@@ -84,6 +106,33 @@
                       "field": "cost"},
       {"headerText": "Team Name", 
                       "field": "team"}]'>
+    </oj-table>
+  </oj-bind-if>
+
+  <oj-bind-if test={{loadTransTable}}>
+
+    <oj-label>
+      <h3><oj-bind-text value="Bonus Per Team in Top 10 Chart"></oj-bind-text></h3>
+    </oj-label>
+
+    <oj-table id="bonusTeam" aria-label="bonusTeamTable" data='{{bonusTeamDataProvider}}'
+      selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
+      scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team Name", 
+      "field": "team"},
+      {"headerText": "Count", 
+                      "field": "count"}]'>
+    </oj-table>
+
+    <oj-label>
+      <h3><oj-bind-text value="Bonus Per Player in Top 10 Chart"></oj-bind-text></h3>
+    </oj-label>
+
+    <oj-table id="bonusTeam" aria-label="FPL Hit data" data='{{bonusPlayerDataProvider}}'
+      selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
+      scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Player Name", 
+      "field": "player"},
+      {"headerText": "Count", 
+                      "field": "count"}]'>
     </oj-table>
   </oj-bind-if>
 </div>

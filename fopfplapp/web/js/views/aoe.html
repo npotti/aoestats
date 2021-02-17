@@ -4,23 +4,68 @@
  -->
 <div class="demo-padding demo-container">
 
+  <div id='menubutton-container'>
+    <oj-menu-button id="menuButton">
+      <span slot="startIcon" class="oj-ux-ico-share"></span>
+      Change Stat
+      <!-- To handle menu item selection, use an action listener as shown, not a click listener. -->
+      <oj-menu id="myMenu" slot="menu" on-oj-action="[[menuItemAction]]">
+        <oj-option id="capVC" value="capVC">
+          Cap-Sub-VC Count
+        </oj-option>
+        <oj-option id="aoeEO" value="aoeEO">
+          AOE EO
+        </oj-option>
+        <!-- <oj-option id="livePlyrsRem" value="livePlyrsRem">
+          Live Players Remaining
+        </oj-option>
+        <oj-option id="livePlyrsChart" value="livePlyrsChart">
+          Live Players Remaining (Graphical)
+        </oj-option> -->
+        <oj-option id="chipStatus" value="chipStatus">
+          Chip Status
+        </oj-option>
+      </oj-menu>
+    </oj-menu-button>
+  </div>
+
+<oj-bind-if test=[[capVCVisible]]>
   <oj-label>
     <h2><oj-bind-text value="Cap, Sub Quota and VC Counts"></oj-bind-text></h2>
   </oj-label>
 
-  <oj-table id="table" aria-label="Players Played" data='[[capQuotaObservable]]'
-  selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
-  scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team Name", 
-"field": "teamName"},
-{"headerText": "Cap Quota", 
-                "field": "capQuota"},
-                {"headerText": "Sub Quota", 
-                "field": "subQuota"},
-                {"headerText": "VC Count", 
-                "field": "vcCount"}]' style='width: 1300px; height:100%;'>
-</oj-table>
+<div style="width: 1px; min-width: 100%;">
+  <oj-list-view id="captainList" aria-label="cap list" data="[[capQuotaObservable]]">
+    <template slot="itemTemplate" data-oj-as="item">
+      <li>
+        <oj-list-item-layout>
+          <div class="oj-typography-body-md oj-typography-bold">
+            <br><b>Team Name:</b>
+            <oj-bind-text value="[[item.data.teamName]]"></oj-bind-text>
+          </div>
+          <div slot="secondary" class="oj-typography-body-sm" style=" white-space:normal;word-wrap:break-word; text-align: left;vertical-align: top;">
+            <br><b>Cap Quota : </b><br>
+            <oj-bind-text value="[[item.data.capQuota]]"></oj-bind-text>
+          </div>
+          <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary" style=" white-space:normal;word-wrap:break-word; text-align: left;vertical-align: top;">
+            <div>
+              <b>Sub Quota :</b><br>
+              <oj-bind-text value="[[item.data.subQuota]]"> </oj-bind-text>
+            </div>
+          </div>
+          <div style=" white-space:normal;word-wrap:break-word; text-align: left;vertical-align: top;"> 
+            <b>VC Count :</b><br>
+            <oj-bind-text value="[[item.data.vcCount]]"> </oj-bind-text>
+          </div>
+        </oj-list-item-layout>
+      </li>
+    </template>
+  </oj-list-view>
+</div>
 
+</oj-bind-if>
 
+<oj-bind-if test=[[livePlayerVisible]]>
 <oj-label>
   <h2><oj-bind-text value="Live Players Remaining"></oj-bind-text></h2>
   <h9><oj-bind-text value="Note: Players with 0 points are now counted as not played, will be fixed in due course"></oj-bind-text></h9>
@@ -31,15 +76,19 @@
     scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team Name", 
   "field": "teamName"},
   {"headerText": "No Of Players Remaining", 
-                  "field": "playersRemaining"},
+                  "field": "playersRemaining",
+                  "headerStyle": "white-space:pre-wrap;"},
   {"headerText": "Players Remaining", 
                   "field": "remainingPlayerData"},
                   {"headerText": "Players Played", 
                   "field": "playersPlayed"},
                   {"headerText": "Players Total", 
-                  "field": "totalPlayers"}]' style='width: 1300px; height:100%;'>
+                  "field": "totalPlayers"}]'>
   </oj-table>
+</oj-bind-if>
 
+
+<oj-bind-if test=[[livePlayerChartVisible]]>
   <oj-label>
     <h3><oj-bind-text value="Live Players Remaining (Graphical Representation)"></oj-bind-text></h3>
   </oj-label>
@@ -47,7 +96,7 @@
   <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
     <div id='chart-container'>
       <oj-chart id="barChart" type="bar" orientation="vertical" stack="off" data="[[chartObservable]]"
-        animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim" style="width: 1300px">
+        animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
 
         <template slot='itemTemplate' data-oj-as='item'>
           <oj-chart-item value='[[item.data.value]]' group-id='[[ [item.data.group] ]]'
@@ -57,32 +106,77 @@
       </oj-chart>
     </div>
   </div> 
+</oj-bind-if>
 
-
+<oj-bind-if test=[[aoeEoVisible]]>
   <oj-label>
     <h2><oj-bind-text value="AOE EO Table"></oj-bind-text></h2>
   </oj-label>
 
-  <oj-table id="eotable" aria-label="AOE EO data" data='[[eoDataProvider]]'
-    selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
-    scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Player Name", 
-      "field": "player"},
-      {"headerText": "Total Count", 
-                      "field": "count"},
-      {"headerText": "AOE EO", 
-                      "field": "percent"}]'>
-  </oj-table>
+  <div style="width: 1px; min-width: 100%;">
+    <oj-list-view id="captainList" aria-label="cap list" data="[[eoDataProvider]]">
+      <template slot="itemTemplate" data-oj-as="item">
+        <li>
+          <oj-list-item-layout>
+            <div class="oj-typography-body-md oj-typography-bold">
+              <b>Player Name :</b>
+              <oj-bind-text value="[[item.data.player]]"></oj-bind-text>
+            </div>
+            <div slot="secondary" class="oj-typography-body-sm">
+              <b>Total Count : </b>
+              <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
+            </div>
+            <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+              <div>
+                <b>AOE EO :</b>
+                <oj-bind-text value="[[item.data.percent]]"> </oj-bind-text>
+              </div>
+            </div>
+          </oj-list-item-layout>
+        </li>
+      </template>
+    </oj-list-view>
+  </div>
 
+</oj-bind-if>
+
+<oj-bind-if test=[[chipStatusVisible]]>
   <oj-label>
     <h2><oj-bind-text value="Individual Chip Usage Status (per AOE team)"></oj-bind-text></h2>
   </oj-label>
 
-  <oj-table id="chipTable" aria-label="FPL Chip data" data='[[chipDataProvider]]'
-  selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
-  scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team Name", 
-    "field": "team"},
-    {"headerText": "FPL Chips Usage Status", 
-                    "field": "info"}]' style='width: 1300px; height:100%;'>
-  </oj-table>
+  <div style="width: 1px; min-width: 100%;">
+    <oj-list-view id="captainList" aria-label="cap list" data="[[chipDataProvider]]">
+      <template slot="itemTemplate" data-oj-as="item">
+        <li>
+          <oj-list-item-layout>
+            <div class="oj-typography-body-md oj-typography-bold">
+              <b>Team Name :</b>
+              <oj-bind-text value="[[item.data.team]]"></oj-bind-text>
+            </div>
+            <div slot="secondary" class="oj-typography-body-sm">
+              <br><b>WCs Used : </b>
+              <oj-bind-text value="[[item.data.wcUsed]]"></oj-bind-text>
+            </div>
+            <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+              <div>
+                <b>FHs Used:</b>
+                <oj-bind-text value="[[item.data.fhUsed]]"> </oj-bind-text>
+              </div>
+            </div>
+            <div>
+              <b>TCs Used :</b>
+              <oj-bind-text value="[[item.data.tcUsed]]"> </oj-bind-text>
+            </div>
+            <div>
+              <b>BBs Used :</b>
+              <oj-bind-text value="[[item.data.bbUsed]]"> </oj-bind-text>
+            </div>
+          </oj-list-item-layout>
+        </li>
+      </template>
+    </oj-list-view>
+  </div>
+</oj-bind-if>
 
 </div>

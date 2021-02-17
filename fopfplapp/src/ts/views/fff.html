@@ -1,0 +1,54 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page" 
+ :style.background-image = "url('css/images/lolbg.png')";>
+    <!-- This is where your main page content will be loaded -->
+    <div class="oj-applayout-content">
+      <div role="main" class="oj-hybrid-applayout-content">
+        <div class="oj-hybrid-padding">
+
+            <div id='menubutton-container'>
+                <oj-menu-button id="menuButton">
+                  <span slot="startIcon" class="oj-ux-ico-share"></span>
+                  Change FFF League
+                  <!-- To handle menu item selection, use an action listener as shown, not a click listener. -->
+                  <oj-menu id="myMenu" slot="menu" on-oj-action="[[menuItemAction]]">
+                    <oj-option id="lol" value="lol">
+                      League Of Legends
+                    </oj-option>
+                    <oj-option id="cl" value="cl">
+                      Champions League
+                    </oj-option>
+                    <oj-option id="pl" value="pl">
+                      Premier League
+                    </oj-option>
+                    <oj-option id="champ" value="champ">
+                      Championship
+                    </oj-option>
+                  </oj-menu>
+                </oj-menu-button>
+              </div>
+        <div :class="transbox">
+            <!-- //{{selectedMenuItem() === 'lol' ? 'transbox' : ''}} -->
+          <oj-list-view id="lmsList" aria-label="list LMSs" data="[[fffDataProvider]]"
+            class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
+            <template slot="itemTemplate" data-oj-as="item">
+              <li>
+                <span :style.color="{{((selectedMenuItem() === 'lol' && item.data.order === 1) ? 'goldenrod' : ((selectedMenuItem() !== 'lol' && item.data.order <=3) ? 'green' : ((selectedMenuItem() !== 'champ' && item.data.order >= fffTableList().length-2) ? 'red' : '' )))}}">
+                <oj-list-item-layout>
+                  <b>
+                    <oj-bind-text slot="leading" value="[[item.data.name]]"></oj-bind-text>
+                  </b>
+                  <oj-bind-text value="[[item.data.score]]"></oj-bind-text>
+                </oj-list-item-layout>
+                </span>
+              </li>
+            </template>
+          </oj-list-view>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

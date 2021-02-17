@@ -1,6 +1,9 @@
 import {AoeTeam} from '../interfaces/aoeteams';
 import {FplMgrHistory, Chip, Current} from '../interfaces/fplmgrhistory';
 import {FPLBootStrap, Team, Element} from '../interfaces/bootstrap';
+import * as ko from "knockout";
+import { Picks } from "../interfaces/picks";
+import { ElementSummary } from "../interfaces/elementsummary";
 
 class CommonUtils{
 
@@ -11,6 +14,51 @@ class CommonUtils{
   public fplTeamsMap = new Map<Number, Team>();
   curr_gw: number = 1;
   finished: boolean = false;
+  fplId: ko.Observable<Number> = ko.observable(0);
+  fplYcMap = new Map<String, Number>();
+  public userPicksMap = new Map<Number, Picks>();
+
+  public fetchPicks(fpl_id: Number, gw: Number){
+    return new Promise((resolve) =>{
+      let urlFinal: string = 'https://fantasy.premierleague.com/api/entry/'+fpl_id+'/event/'+gw+"/picks/";
+      fetch(urlFinal).then(res => res.json()).
+        then(res => {
+          const picksConst: Picks = <Picks>res;
+          resolve(picksConst);
+        });
+    });
+  }
+
+  public fetchUserPicks(fpl_id: Number){
+    return new Promise((resolve) => {
+      const promises = [];
+      let i=0;
+      for(i=0; i<=this.curr_gw; i++){
+        console.log("inside user picks "+i+ " : "+this.curr_gw);
+        const promise = this.fetchPicks(fpl_id, i);
+        promises.push(promise);
+        promise.then(res => {
+          const picksConst: Picks = <Picks>res;
+          console.log("set user picks "+picksConst.entry_history.event);
+          this.userPicksMap.set(picksConst.entry_history.event, picksConst);
+        })
+      }
+      Promise.all(promises).then(res => {
+        resolve(true);
+      })
+    })
+  }
+
+  public fetchElementSummary(player_id: Number){
+    let fpl_elem_sum_url = 'https://fantasy.premierleague.com/api/element-summary/'+player_id+"/";
+    return new Promise((resolve) => {
+      fetch(fpl_elem_sum_url).then(res => res.json()).
+      then(res => {
+        const ele: ElementSummary = <ElementSummary>res;
+        resolve(ele);
+      });
+    })
+  }
 
   fetchFplMgrHistory(mgrId: number){
     return new Promise((resolve) => {
@@ -103,6 +151,7 @@ class CommonUtils{
                 if(resResult.elements){
                   resResult.elements.forEach(element => {
                     this.fplPlayerMap.set(element.id, element);
+                    this.fplYcMap.set(element.first_name+" "+element.second_name, element.yellow_cards);
                   });
                 }
                 if(resResult.events){

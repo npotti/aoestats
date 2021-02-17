@@ -1,1 +1,353 @@
-define(["require","exports","../utils/commonutils","ojs/ojarraydataprovider","knockout","ojs/ojtable","ojs/ojchart"],(function(require,e,t,a,s){"use strict";Object.defineProperty(e,"__esModule",{value:!0});e.default=class{constructor(){this.capQuotaObservableArray=s.observableArray([]),this.capQuotaObservable=s.observable(),this.playersPlayedObservableArray=s.observableArray([]),this.playersPlayedObservable=s.observable(),this.vegTallyTableList=s.observableArray([]),this.chartObservableArray=s.observableArray([]),this.chartObservable=s.observable(),this.tallyUrl="https://fopfpl.in/aoe/api/veg_tally",this.curr_gw=1,this.eoTableList=s.observableArray([]),this.eoDataProvider=s.observable(),this.aoePlayerMap=new Map,this.chipTableList=s.observableArray([]),this.chipDataProvider=s.observable();t.default.fetchCurrGW().then(e=>{this.curr_gw=e,this.fetchAoeEO(this.curr_gw),this.vegTallyDataProvider=s.observable(new a(this.vegTallyTableList));let t=1;for(;t<=10;t++)this.fetchTeamVegTally(this.curr_gw,t)});this.fetchFplChipCounts().then(e=>{this.chipDataProvider(new a(this.chipTableList))}),this.fetchCapQuota()}fetcheo(e,t){return new Promise(a=>{fetch(e).then(e=>e.json()).then(e=>{e.forEach(e=>{if(t.get(e.name)){let a=t.get(e.name);a+=e.count,t.set(e.name,a)}else t.set(e.name,e.count)}),a(e)})})}fetchCapQuota(){fetch("https://fopfpl.in/aoe/api/game_week/scores/").then(e=>e.json()).then(e=>{const s=e;let r=new Map,l=new Map,i=new Map;s.forEach(e=>{let t=0;for(;t<10;t++){let a=r.get(t),s=l.get(t),n=i.get(t);if(a||(a=new Map),s||(s=new Map),n||(n=new Map),a.has(e[t].captain.first_name)){let s=a.get(e[t].captain.first_name);s+=1,a.set(e[t].captain.first_name,s)}else a.set(e[t].captain.first_name,1);if(s.has(e[t].substitute.first_name)){let a=s.get(e[t].substitute.first_name);a+=1,s.set(e[t].substitute.first_name,a)}else s.set(e[t].substitute.first_name,1);if(n.has(e[t].vice_captain.first_name)){let a=n.get(e[t].vice_captain.first_name);a+=1,n.set(e[t].vice_captain.first_name,a)}else n.set(e[t].vice_captain.first_name,1);r.set(t,a),l.set(t,s),i.set(t,n)}});let n=0;for(;n<10;n++){let e="";for(let t of Array.from(r.get(n).entries())){e=e+t[0]+":"+t[1]+","}let a="";for(let e of Array.from(l.get(n).entries())){a=a+e[0]+":"+e[1]+","}let s="";for(let e of Array.from(i.get(n).entries())){s=s+e[0]+":"+e[1]+","}e.endsWith(",")&&(e=e.substring(0,e.length-1)),a.endsWith(",")&&(a=a.substring(0,a.length-1)),s.endsWith(",")&&(s=s.substring(0,s.length-1));var h={teamName:t.default.fetchTeamName(n+1),capQuota:e,subQuota:a,vcCount:s};this.capQuotaObservableArray.push(h)}this.capQuotaObservable(new a(this.capQuotaObservableArray))})}fetchTeamVegTally(e,s){let r=this.tallyUrl+"/"+e+"/"+s;fetch(r).then(e=>e.json()).then(e=>{const r=e;let l=0,i=0,n=0,h=new Map;r.forEach(e=>{0!==e.score?l+=e.count:(i+=e.count,h.set(e.name,e.count)),n+=e.count,this.vegTallyTableList().push(e)});let o="";for(let e of Array.from(h.entries())){o=o+e[0]+":"+e[1]+","}o.endsWith(",")&&(o=o.substring(0,o.length-1));let c=t.default.fetchTeamName(s);var b={team:s,teamName:c,playersPlayed:l,playersRemaining:i,totalPlayers:n,remainingPlayerData:o},f={id:s,group:"Players Played",value:l,series:c},p={id:s,group:"Players Remaining",value:i,series:c};this.chartObservableArray.push(f),this.chartObservableArray.push(p),this.playersPlayedObservableArray.push(b),this.playersPlayedObservableArray.sort((e,t)=>e.playersRemaining>t.playersRemaining?-1:e.playersRemaining<t.playersRemaining?1:0),this.vegTallyDataProvider(new a(this.vegTallyTableList)),this.playersPlayedObservable(new a(this.playersPlayedObservableArray)),this.chartObservable(new a(this.chartObservableArray))})}fetchAoeEO(e){let s=new Map;const r=[];for(let t=1;t<=10;t++){let a=this.tallyUrl+"/"+e+"/"+t;r.push(this.fetcheo(a,s))}Promise.all(r).then(e=>{for(let e of Array.from(s.entries())){let a=e[0],s=e[1],r=s/60*100,l={player:a,count:s,percent:t.default.roundToTwo(r)};this.eoTableList.push(l)}this.eoTableList.sort((e,t)=>e.percent>t.percent?-1:e.percent<t.percent?1:0),this.eoDataProvider(new a(this.eoTableList))})}fetchFplChipCounts(){return new Promise(e=>{let a=t.default.fetchAoeTeams();const s=[];a.then(a=>{a.forEach(a=>{let r=0,l=0,i=0,n=0;a.players.forEach(e=>{this.aoePlayerMap.set(e.first_name+" "+e.last_name+" ("+t.default.fetchTeamName(a.id)+" )",e.fpl_id);let h=t.default.fetchFplMgrHistory(e.fpl_id);s.push(h),h.then(e=>{let t=e.chips;t.length>0&&t.forEach(e=>{"wildcard"===e.name?r+=1:"3xc"===e.name?n+=1:"freehit"===e.name?l+=1:"bboost"===e.name&&(i+=1)})})}),Promise.all(s).then(s=>{let h="WCs Used :: "+r+", TCs Used :: "+n+", FHs Used :: "+l+" BBs Used :: "+i,o={team:t.default.fetchTeamName(a.id),info:h};this.chipTableList.push(o),e(!0)})})})})}connected(){}disconnected(){}transitionCompleted(){}}}));
+define(["require", "exports", "../utils/commonutils", "ojs/ojarraydataprovider", "knockout", "ojs/ojtable", "ojs/ojchart", "ojs/ojmenu", "ojs/ojoption", "ojs/ojarraytabledatasource"], function (require, exports, commonutils_1, ArrayDataProvider, ko) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class CustomersViewModel {
+        constructor() {
+            this.capQuotaObservableArray = ko.observableArray([]);
+            this.capQuotaObservable = ko.observable();
+            this.playersPlayedObservableArray = ko.observableArray([]);
+            this.playersPlayedObservable = ko.observable();
+            this.vegTallyTableList = ko.observableArray([]);
+            this.chartObservableArray = ko.observableArray([]);
+            this.chartObservable = ko.observable();
+            this.tallyUrl = 'https://fopfpl.in/aoe/api/veg_tally';
+            this.curr_gw = 1;
+            this.eoTableList = ko.observableArray([]);
+            this.eoDataProvider = ko.observable();
+            this.aoePlayerMap = new Map();
+            this.chipTableList = ko.observableArray([]);
+            this.chipDataProvider = ko.observable();
+            this.selectedMenuItem = ko.observable('');
+            this.aoeEoVisible = ko.observable(false);
+            this.capVCVisible = ko.observable(true);
+            this.livePlayerVisible = ko.observable(false);
+            this.chipStatusVisible = ko.observable(false);
+            this.livePlayerChartVisible = ko.observable(false);
+            this.datasource = ko.observableArray();
+            this.menuItemAction = (event) => {
+                this.selectedMenuItem(event.target.value);
+                if (this.selectedMenuItem() === 'capVC') {
+                    this.capVCVisible(true);
+                    this.aoeEoVisible(false);
+                    this.chipStatusVisible(false);
+                    this.livePlayerChartVisible(false);
+                    this.livePlayerVisible(false);
+                }
+                else if (this.selectedMenuItem() === 'aoeEO') {
+                    this.capVCVisible(false);
+                    this.aoeEoVisible(true);
+                    this.chipStatusVisible(false);
+                    this.livePlayerChartVisible(false);
+                    this.livePlayerVisible(false);
+                }
+                else if (this.selectedMenuItem() === 'livePlyrsRem') {
+                    this.capVCVisible(false);
+                    this.aoeEoVisible(false);
+                    this.chipStatusVisible(false);
+                    this.livePlayerChartVisible(false);
+                    this.livePlayerVisible(true);
+                }
+                else if (this.selectedMenuItem() === 'livePlyrsChart') {
+                    this.capVCVisible(false);
+                    this.aoeEoVisible(false);
+                    this.chipStatusVisible(false);
+                    this.livePlayerChartVisible(true);
+                    this.livePlayerVisible(false);
+                }
+                else if (this.selectedMenuItem() === 'chipStatus') {
+                    this.capVCVisible(false);
+                    this.aoeEoVisible(false);
+                    this.chipStatusVisible(true);
+                    this.livePlayerChartVisible(false);
+                    this.livePlayerVisible(false);
+                }
+            };
+            var self = this;
+            var deptArray = [];
+            var db = null;
+            // On device ready, create the table if it does not exists.
+            // document.addEventListener("deviceready", function () {
+            //     db = (<any>window).sqlitePlugin.openDatabase({name: "aoe.db"});
+            //     db.transaction(function (tx) {
+            //         tx.executeSql("CREATE TABLE IF NOT EXISTS RIVALS (fplid text primary key, name text)");
+            //     }, function (err) {
+            //         alert("An error occured while initializing the app");
+            //     });
+            // }, false);
+            const promise = commonutils_1.default.fetchCurrGW();
+            promise.then(res => {
+                this.curr_gw = res;
+                this.fetchAoeEO(this.curr_gw);
+                this.vegTallyDataProvider = ko.observable(new ArrayDataProvider(this.vegTallyTableList));
+                let i = 1;
+                for (i; i <= 10; i++) {
+                    this.fetchTeamVegTally(this.curr_gw, i);
+                }
+            });
+            const promise2 = this.fetchFplChipCounts();
+            promise2.then(res => {
+                this.chipDataProvider(new ArrayDataProvider(this.chipTableList));
+            });
+            this.fetchCapQuota();
+        }
+        fetcheo(urlFinal, playerMap) {
+            return new Promise((resolve) => {
+                fetch(urlFinal).
+                    then(res => res.json())
+                    .then(res => {
+                    const resResult = res;
+                    resResult.forEach(row => {
+                        if (!playerMap.get(row.name)) {
+                            playerMap.set(row.name, row.count);
+                        }
+                        else {
+                            let count = playerMap.get(row.name);
+                            count = count + row.count;
+                            playerMap.set(row.name, count);
+                        }
+                    });
+                    resolve(res);
+                });
+            });
+        }
+        fetchCapQuota() {
+            fetch('https://fopfpl.in/aoe/api/game_week/scores/').
+                then(res => res.json())
+                .then(res => {
+                const resResult = res;
+                let teamCapMap = new Map();
+                let teamSubMap = new Map();
+                let teamVcMap = new Map();
+                resResult.forEach(row => {
+                    let i = 0;
+                    for (i; i < 10; i++) {
+                        let capMap = teamCapMap.get(i);
+                        let subMap = teamSubMap.get(i);
+                        let vcMap = teamVcMap.get(i);
+                        if (!capMap) {
+                            capMap = new Map();
+                        }
+                        if (!subMap) {
+                            subMap = new Map();
+                        }
+                        if (!vcMap) {
+                            vcMap = new Map();
+                        }
+                        if (capMap.has(row[i].captain.first_name)) {
+                            let cnt = capMap.get(row[i].captain.first_name);
+                            cnt = cnt + 1;
+                            capMap.set(row[i].captain.first_name, cnt);
+                        }
+                        else {
+                            capMap.set(row[i].captain.first_name, 1);
+                        }
+                        if (subMap.has(row[i].substitute.first_name)) {
+                            let cnt = subMap.get(row[i].substitute.first_name);
+                            cnt = cnt + 1;
+                            subMap.set(row[i].substitute.first_name, cnt);
+                        }
+                        else {
+                            subMap.set(row[i].substitute.first_name, 1);
+                        }
+                        if (vcMap.has(row[i].vice_captain.first_name)) {
+                            let cnt = vcMap.get(row[i].vice_captain.first_name);
+                            cnt = cnt + 1;
+                            vcMap.set(row[i].vice_captain.first_name, cnt);
+                        }
+                        else {
+                            vcMap.set(row[i].vice_captain.first_name, 1);
+                        }
+                        teamCapMap.set(i, capMap);
+                        teamSubMap.set(i, subMap);
+                        teamVcMap.set(i, vcMap);
+                    }
+                });
+                let i = 0;
+                for (i; i < 10; i++) {
+                    let capStr = "";
+                    for (let entry of Array.from(teamCapMap.get(i).entries())) {
+                        let name = entry[0];
+                        let count = entry[1];
+                        capStr = capStr + name + ":" + count + ",";
+                    }
+                    let subStr = "";
+                    for (let entry of Array.from(teamSubMap.get(i).entries())) {
+                        let name = entry[0];
+                        let count = entry[1];
+                        subStr = subStr + name + ":" + count + ",";
+                    }
+                    let vcStr = "";
+                    for (let entry of Array.from(teamVcMap.get(i).entries())) {
+                        let name = entry[0];
+                        let count = entry[1];
+                        vcStr = vcStr + name + ":" + count + ",";
+                    }
+                    if (capStr.endsWith(",")) {
+                        capStr = capStr.substring(0, capStr.length - 1);
+                    }
+                    if (subStr.endsWith(",")) {
+                        subStr = subStr.substring(0, subStr.length - 1);
+                    }
+                    if (vcStr.endsWith(",")) {
+                        vcStr = vcStr.substring(0, vcStr.length - 1);
+                    }
+                    var ele = { "teamName": commonutils_1.default.fetchTeamName(i + 1), "capQuota": capStr, "subQuota": subStr, "vcCount": vcStr };
+                    this.capQuotaObservableArray.push(ele);
+                }
+                this.capQuotaObservable(new ArrayDataProvider(this.capQuotaObservableArray));
+            });
+        }
+        fetchTeamVegTally(gameweek, team) {
+            let urlFinal = this.tallyUrl + '/' + gameweek + '/' + team;
+            fetch(urlFinal).
+                then(res => res.json())
+                .then(res => {
+                const resResult = res;
+                let playersPlayed = 0;
+                let playersRemaining = 0;
+                let totalPlayers = 0;
+                let remMap = new Map();
+                resResult.forEach(row => {
+                    if (row.score !== 0) { //players with 0
+                        playersPlayed += row.count;
+                    }
+                    else {
+                        playersRemaining += row.count;
+                        remMap.set(row.name, row.count);
+                    }
+                    totalPlayers += row.count;
+                    this.vegTallyTableList().push(row);
+                });
+                let remStr = "";
+                for (let entry of Array.from(remMap.entries())) {
+                    let name = entry[0];
+                    let count = entry[1];
+                    remStr = remStr + name + ":" + count + ",";
+                }
+                if (remStr.endsWith(",")) {
+                    remStr = remStr.substring(0, remStr.length - 1);
+                }
+                let teamName = commonutils_1.default.fetchTeamName(team);
+                var ele = { "team": team, "teamName": teamName, "playersPlayed": playersPlayed, "playersRemaining": playersRemaining, "totalPlayers": totalPlayers, "remainingPlayerData": remStr };
+                var chartEle = { "id": team, "group": "Players Played", "value": playersPlayed,
+                    "series": teamName };
+                var chartEle2 = { "id": team, "group": "Players Remaining", "value": playersRemaining,
+                    "series": teamName };
+                this.chartObservableArray.push(chartEle);
+                this.chartObservableArray.push(chartEle2);
+                this.playersPlayedObservableArray.push(ele);
+                this.playersPlayedObservableArray.sort((a, b) => {
+                    if (a.playersRemaining > b.playersRemaining) {
+                        return -1;
+                    }
+                    if (a.playersRemaining < b.playersRemaining) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.vegTallyDataProvider(new ArrayDataProvider(this.vegTallyTableList));
+                this.playersPlayedObservable(new ArrayDataProvider(this.playersPlayedObservableArray));
+                this.chartObservable(new ArrayDataProvider(this.chartObservableArray));
+            });
+        }
+        fetchAoeEO(gameweek) {
+            let playerMap = new Map();
+            const promises = [];
+            for (let i = 1; i <= 10; i++) {
+                let urlFinal = this.tallyUrl + '/' + gameweek + '/' + i;
+                promises.push(this.fetcheo(urlFinal, playerMap));
+            }
+            Promise.all(promises).then(resolve => {
+                for (let entry of Array.from(playerMap.entries())) {
+                    let name = entry[0];
+                    let count = entry[1];
+                    let percent = ((count / 60) * 100);
+                    let ele = { "player": name, "count": count, "percent": commonutils_1.default.roundToTwo(percent) };
+                    this.eoTableList.push(ele);
+                }
+                this.eoTableList.sort((a, b) => {
+                    if (a.percent > b.percent) {
+                        return -1;
+                    }
+                    if (a.percent < b.percent) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.eoDataProvider(new ArrayDataProvider(this.eoTableList));
+            });
+        }
+        fetchFplChipCounts() {
+            return new Promise((accept) => {
+                let promise = commonutils_1.default.fetchAoeTeams();
+                const promises = [];
+                promise.then((res) => {
+                    let aoeTeams = res;
+                    aoeTeams.forEach(team => {
+                        let wcUsed = 0;
+                        let fhUsed = 0;
+                        let bbUsed = 0;
+                        let tcUsed = 0;
+                        team.players.forEach(player => {
+                            this.aoePlayerMap.set(player.first_name + " " + player.last_name + " (" + commonutils_1.default.fetchTeamName(team.id) + " )", player.fpl_id);
+                            let promiseCh = commonutils_1.default.fetchFplMgrHistory(player.fpl_id);
+                            promises.push(promiseCh);
+                            promiseCh.then((res) => {
+                                let respHist = res;
+                                let chips = respHist.chips;
+                                if (chips.length > 0) {
+                                    chips.forEach(chip => {
+                                        if (chip.name === 'wildcard') {
+                                            wcUsed = wcUsed + 1;
+                                        }
+                                        else if (chip.name === '3xc') {
+                                            tcUsed = tcUsed + 1;
+                                        }
+                                        else if (chip.name === 'freehit') {
+                                            fhUsed = fhUsed + 1;
+                                        }
+                                        else if (chip.name === 'bboost') {
+                                            bbUsed = bbUsed + 1;
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                        Promise.all(promises).then(resolve => {
+                            let info = "WCs Used :: " + wcUsed + ", TCs Used :: " + tcUsed + ", FHs Used :: " + fhUsed + " BBs Used :: " + bbUsed;
+                            let ele = { "team": commonutils_1.default.fetchTeamName(team.id), "info": info, "wcUsed": wcUsed, "tcUsed": tcUsed, "fhUsed": fhUsed, "bbUsed": bbUsed };
+                            this.chipTableList.push(ele);
+                            accept(true);
+                        });
+                    });
+                });
+            });
+        }
+        /**
+         * Optional ViewModel method invoked after the View is inserted into the
+         * document DOM.  The application can put logic that requires the DOM being
+         * attached here.
+         * This method might be called multiple times - after the View is created
+         * and inserted into the DOM and after the View is reconnected
+         * after being disconnected.
+         */
+        connected() {
+            // implement if needed
+        }
+        /**
+         * Optional ViewModel method invoked after the View is disconnected from the DOM.
+         */
+        disconnected() {
+            // implement if needed
+        }
+        /**
+         * Optional ViewModel method invoked after transition to the new View is complete.
+         * That includes any possible animation between the old and the new View.
+         */
+        transitionCompleted() {
+            // implement if needed
+        }
+    }
+    exports.default = CustomersViewModel;
+});
+//# sourceMappingURL=aoe.js.map

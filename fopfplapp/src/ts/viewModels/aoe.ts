@@ -11,9 +11,13 @@ import * as ArrayDataProvider from 'ojs/ojarraydataprovider';
 import * as ko from 'knockout';
 import "ojs/ojtable";
 import "ojs/ojchart";
+import { ojMenuEventMap } from 'ojs/ojmenu';
+import 'ojs/ojmenu';
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import { PagingModel } from "ojs/ojpagingmodel";
 import { ojButtonEventMap } from 'ojs/ojbutton';
+import 'ojs/ojoption';
+import 'ojs/ojarraytabledatasource';
 
 class CustomersViewModel {
 
@@ -32,8 +36,31 @@ class CustomersViewModel {
   aoePlayerMap = new Map();
   chipTableList: ko.ObservableArray = ko.observableArray([]);
   chipDataProvider:  ko.Observable = ko.observable();
+  selectedMenuItem: ko.Observable<string> = ko.observable('');
+  aoeEoVisible: ko.Observable<Boolean> = ko.observable(false);
+  capVCVisible: ko.Observable<Boolean> = ko.observable(true);
+  livePlayerVisible: ko.Observable<Boolean> = ko.observable(false);
+  chipStatusVisible: ko.Observable<Boolean> = ko.observable(false);
+  livePlayerChartVisible: ko.Observable<Boolean> = ko.observable(false);
+  datasource= ko.observableArray();
 
   constructor() {
+
+    var self = this;
+    var deptArray = [];
+    var db = null;
+    // On device ready, create the table if it does not exists.
+    // document.addEventListener("deviceready", function () {
+    //     db = (<any>window).sqlitePlugin.openDatabase({name: "aoe.db"});
+    //     db.transaction(function (tx) {
+    //         tx.executeSql("CREATE TABLE IF NOT EXISTS RIVALS (fplid text primary key, name text)");
+    //     }, function (err) {
+    //         alert("An error occured while initializing the app");
+    //     });
+    // }, false);
+
+
+
     const promise = CommonUtils.fetchCurrGW();
     promise.then(res => {
       this.curr_gw = <number>res;
@@ -49,6 +76,45 @@ class CustomersViewModel {
       this.chipDataProvider(new ArrayDataProvider(this.chipTableList));
     })
     this.fetchCapQuota();
+  }
+
+  public menuItemAction = (event: ojMenuEventMap['ojAction']) => {
+    this.selectedMenuItem((event.target as HTMLInputElement).value);
+    if(this.selectedMenuItem() === 'capVC'){
+      this.capVCVisible(true);
+      this.aoeEoVisible(false);
+      this.chipStatusVisible(false);
+      this.livePlayerChartVisible(false);
+      this.livePlayerVisible(false);
+    }
+    else if(this.selectedMenuItem() === 'aoeEO'){
+      this.capVCVisible(false);
+      this.aoeEoVisible(true);
+      this.chipStatusVisible(false);
+      this.livePlayerChartVisible(false);
+      this.livePlayerVisible(false);
+    }
+    else if(this.selectedMenuItem() === 'livePlyrsRem'){
+      this.capVCVisible(false);
+      this.aoeEoVisible(false);
+      this.chipStatusVisible(false);
+      this.livePlayerChartVisible(false);
+      this.livePlayerVisible(true);
+    }
+    else if(this.selectedMenuItem() === 'livePlyrsChart'){
+      this.capVCVisible(false);
+      this.aoeEoVisible(false);
+      this.chipStatusVisible(false);
+      this.livePlayerChartVisible(true);
+      this.livePlayerVisible(false);
+    }
+    else if(this.selectedMenuItem() === 'chipStatus'){
+      this.capVCVisible(false);
+      this.aoeEoVisible(false);
+      this.chipStatusVisible(true);
+      this.livePlayerChartVisible(false);
+      this.livePlayerVisible(false);
+    }
   }
 
   private fetcheo(urlFinal: string, playerMap: Map<string, number>) {
@@ -291,7 +357,7 @@ class CustomersViewModel {
             });
             Promise.all(promises).then(resolve =>{
               let info: string = "WCs Used :: "+wcUsed+", TCs Used :: "+tcUsed+", FHs Used :: "+fhUsed+" BBs Used :: "+bbUsed;
-              let ele = {"team": CommonUtils.fetchTeamName(team.id), "info" : info};
+              let ele = {"team": CommonUtils.fetchTeamName(team.id), "info" : info, "wcUsed" : wcUsed, "tcUsed": tcUsed, "fhUsed": fhUsed, "bbUsed": bbUsed};
               this.chipTableList.push(ele);
               accept(true);
             });

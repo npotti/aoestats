@@ -1,0 +1,47 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page"
+ :style.background-image = "url('css/images/lmsbg.jpg')">
+    <!-- This is where your main page content will be loaded -->
+    <div class="oj-applayout-content">
+      <div role="main" class="oj-hybrid-applayout-content">
+        <div class="oj-hybrid-padding">
+          <div class="transbox">
+          <oj-list-view id="lmsList" aria-label="list LMSs" data="[[lmsDataProvider]]"
+            class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="visible">
+            <template slot="itemTemplate" data-oj-as="item">
+              <li>
+                <oj-list-item-layout>
+                  <b>
+                    <oj-bind-text slot="leading" value="[[item.data.team]]"></oj-bind-text>
+                  </b>
+                  <oj-bind-text  value="[[item.data.player]]"></oj-bind-text>
+                  <div class="oj-typography-body-md oj-typography-bold">
+                    <br><b>Points :</b>
+                    <oj-bind-text value="[[item.data.points]]"></oj-bind-text>
+                  </div>
+                  <div slot="secondary" class="oj-typography-body-sm">
+                    <b>Players Remaining : </b>
+                    <oj-bind-text value="[[item.data.playersRem]]"></oj-bind-text>
+                  </div>
+                  <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+                    <div>
+                      <b>Players on Bench :</b>
+                      <oj-bind-text value="[[item.data.playersBench]]"> </oj-bind-text>
+                    </div>
+                  </div>
+                  <div class="oj-typography-body-md oj-typography-bold">
+                    <br><b>Overall Rank :</b>
+                    <oj-bind-text value="[[item.data.rank]]"></oj-bind-text>
+                  </div>
+                </oj-list-item-layout>
+              </li>
+            </template>
+          </oj-list-view>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

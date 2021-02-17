@@ -1,0 +1,40 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page" :style.background-image = "url('css/images/injuries.jpg')">
+    <!-- This is where your main page content will be loaded -->
+    <div class="oj-applayout-content">
+      <div role="main" class="oj-hybrid-applayout-content">
+        <div class="oj-hybrid-padding">
+
+          <div :class="transinjuriesbox">
+          <oj-list-view id="setpieceslist" aria-label="list with setpieces" data="[[setPiecesDataProvider]]"
+            class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
+            <template slot="itemTemplate" data-oj-as="item">
+              <li>
+                <oj-list-item-layout>
+                  <oj-avatar slot="leading" size="md" src="{{item.data.teamlogo}}"></oj-avatar>
+                  <div class="oj-typography-body-md oj-typography-bold">
+                    <br><b>Pens :</b>
+                    <b><oj-bind-text value="[[item.data.pens]]"></oj-bind-text></b>
+                  </div>
+                  <div slot="secondary" class="oj-typography-body-sm">
+                    <b>FKs : </b>
+                    <b><oj-bind-text value="[[item.data.fks]]"></oj-bind-text></b>
+                  </div>
+                  <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+                    <div>
+                      <b>Corners :</b>
+                      <b><oj-bind-text value="[[item.data.corners]]"> </oj-bind-text></b>
+                    </div>
+                  </div>
+                </oj-list-item-layout>
+              </li>
+            </template>
+          </oj-list-view>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

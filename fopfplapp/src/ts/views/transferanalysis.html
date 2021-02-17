@@ -1,0 +1,77 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page">
+  <!-- This is where your main page content will be loaded -->
+  <div class="oj-applayout-content">
+    <div role="main" class="oj-hybrid-applayout-content">
+
+      <div class="oj-hybrid-padding">
+        <oj-label for="text-input">FPL ID</oj-label>
+        <oj-input-number value={{fplId}} min=0 max=99999999 step=0></oj-input-number>
+        <div>
+          <oj-button on-oj-action="[[onLoadTransferGains]]">
+            <oj-bind-text value="See Transfer Gains"></oj-bind-text>
+          </oj-button>
+        </div>
+        <h7>Note : To Know Your FPL ID, Click on View Gameweek History and you will see below URL with your ID.
+          https://fantasy.premierleague.com/entry/< FPL_ID>/history</h7>
+      </div>
+
+      <div class="oj-hybrid-padding">
+
+        <!-- Best Immediate Transfer Gain :
+        <oj-bind-text value="[[bestTransfer]]"></oj-bind-text>
+        <br>
+        Worst Immediate Transfer Loss :
+        <oj-bind-text value="[[worstTransfer]]"></oj-bind-text>
+        <br>  -->
+        <!-- Total Immediate Gain by Transfers : -->
+        <!-- <oj-bind-text value="[[totalGain]]"></oj-bind-text> -->
+
+        <div>
+        <oj-list-view id="transfersList" aria-label="list with transfers" data="[[transferDataProvider]]"
+          class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
+          <template slot="itemTemplate" data-oj-as="item">
+            <li>
+              <oj-list-item-layout>
+                <div class="oj-typography-body-md oj-typography-bold">
+                  GW :
+                  <b><oj-bind-text value="[[item.data.gw]]"></oj-bind-text></b>
+                </div>
+                <div slot="secondary" class="oj-typography-body-sm">
+                  Transfer In :
+                  <b><oj-bind-text value="[[item.data.transferIn]]"></oj-bind-text></b>
+                </div>
+                <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+                  <div>
+                    Transfer Out :
+                    <b><oj-bind-text value="[[item.data.transferOut]]"> </oj-bind-text></b>
+                  </div>
+                  <div>
+                    Transfer In Player Score :
+                    <b><oj-bind-text value="[[item.data.transInPts]]"> </oj-bind-text></b>
+                  </div>
+                  <div>
+                    Transfer Out Player Score :
+                    <b><oj-bind-text value="[[item.data.transOutPts]]"> </oj-bind-text></b>
+                  </div>
+                  <div>
+                    Cost Of Transfer :
+                    <b><oj-bind-text value="[[item.data.cost]]"> </oj-bind-text></b>
+                  </div>
+                  <div>
+                    Effective Gain :
+                    <b><oj-bind-text value="[[item.data.effectiveGain]]"> </oj-bind-text></b>
+                  </div>
+                </div>
+              </oj-list-item-layout>
+            </li>
+          </template>
+        </oj-list-view>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

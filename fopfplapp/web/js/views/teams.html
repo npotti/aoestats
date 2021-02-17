@@ -17,17 +17,34 @@
     <h9><oj-bind-text value="Calculation of averages is based on FPL teams of these AOE team members, so Cap VC in AOE will not effect the data."></oj-bind-text></h9>
   </oj-label>
 
-  <oj-table id="table" aria-label="Gain Table" data='[[gainDataProvider]]'
-  selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
-  scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team", 
-  "field": "team"},
-  {"headerText": "Your Points", 
-                  "field": "count"},
-                  {"headerText": "AOE Avg", 
-                  "field": "avg"},
-                  {"headerText": "Gain", 
-                  "field": "gain"
-                  }]' style='width: 1300px; height:100%;'>
-  </oj-table>
+  <div style="width: 1px; min-width: 100%;">
+    <oj-list-view id="captainList" aria-label="cap list" data="[[gainDataProvider]]">
+      <template slot="itemTemplate" data-oj-as="item">
+        <li>
+          <oj-list-item-layout>
+            <div class="oj-typography-body-md oj-typography-bold">
+              <b>Team Name :</b>
+              <oj-bind-text value="[[item.data.team]]"></oj-bind-text>
+            </div>
+            <div slot="secondary" class="oj-typography-body-sm">
+              <br><b>Your Points : </b>
+              <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
+            </div>
+            <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+              <div>
+                <b>AOE Avg:</b>
+                <oj-bind-text value="[[item.data.avg]]"> </oj-bind-text>
+              </div>
+            </div>
+            <div>
+              <b>Gain :</b>
+              <oj-bind-text value="[[item.data.gain]]"> </oj-bind-text>
+            </div>
+          </oj-list-item-layout>
+        </li>
+      </template>
+    </oj-list-view>
+  </div>
+
 </oj-bind-if>
 </div>

@@ -1,6 +1,7 @@
 import {VegTallyPojo} from '../interfaces/vegtallypojo';
 import {FplMgrHistory, Chip, Current} from '../interfaces/fplmgrhistory';
 import {AoeTeam} from '../interfaces/aoeteams';
+import {Bonus} from '../interfaces/bonus';
 import {Pick, Picks} from '../interfaces/picks';
 import {FPLBootStrap, Team} from '../interfaces/bootstrap';
 import {FPLTransfers} from '../interfaces/transfers';
@@ -14,10 +15,19 @@ import "ojs/ojchart";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import { PagingModel } from "ojs/ojpagingmodel";
 import { ojButtonEventMap } from 'ojs/ojbutton';
+import { IntlNumberConverter } from "ojs/ojconverter-number";
+import "ojs/ojgauge";
+import 'ojs/ojavatar';
 
 class DashboardViewModel {
+  readonly numberConverter = new IntlNumberConverter({
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
   tallyUrl: string = 'https://fopfpl.in/aoe/api/veg_tally';
   fplBaseUrl: string = 'https://fantasy.premierleague.com/api/';
+  bonusCandidateUrl: string = 'https://fopfpl.in/aoe/api/bonus_candidate/';
   chipTableList: ko.ObservableArray = ko.observableArray([]);
   chipDataProvider:  ko.Observable = ko.observable();
   transferTableList: ko.ObservableArray = ko.observableArray([]);
@@ -28,8 +38,11 @@ class DashboardViewModel {
   mostFPLCaptained: ko.Observable = ko.observable();
   mostFPLTransferredOut: ko.Observable = ko.observable();
   mostAOETransferredIn: ko.Observable = ko.observable();
-  aoeCaptained: ko.Observable = ko.observable();
+  mostAoeCaptained: ko.Observable = ko.observable();
+  mostAoeCaptainedNo: ko.Observable = ko.observable(0);
   mostAOETransferredOut: ko.Observable = ko.observable();
+  mostAOETransferredOutPic: ko.Observable = ko.observable();
+  mostAOETransferredInPic: ko.Observable = ko.observable();
   aoePlayerMap = new Map();
   aoeTeams: AoeTeam[] = [];
   curr_gw: number = 1;
@@ -41,12 +54,22 @@ class DashboardViewModel {
   aoeGwPlayerTransfers = new Map();
   loadTransTable: ko.Observable<boolean> = ko.observable(false);
   playerChipMap = new Map();
+  codeMap = new Map();
   playerCaptainMap = new Map();
   playerViceCaptainMap = new Map();
   playerRankMap = new Map();
   playerPicksMap = new Map<Number, Pick[]>();
   aoeFplTeamAvgMap = new Map();
   aoeLiveScoreMap = new Map<Number, Number>();
+  bonusPlayerMap = new Map();
+  bonusTeamMap = new Map();
+  bonusTeamTableList: ko.ObservableArray = ko.observableArray([]);
+  bonusTeamDataProvider:  ko.Observable = ko.observable();
+  bonusPlayerTableList: ko.ObservableArray = ko.observableArray([]);
+  bonusPlayerDataProvider:  ko.Observable = ko.observable();
+  readonly thresholdValues = [{ max: 10 }, { max: 30 }, {}];
+  mostAoeCappedList: ko.ObservableArray = ko.observableArray([]);
+  mostAoeCappedDataProvider:  ko.Observable = ko.observable();
 
   constructor() {
     const promises = [];
@@ -64,6 +87,7 @@ class DashboardViewModel {
 
     Promise.all(promises).then(resolve =>{
       this.curr_gw = CommonUtils.curr_gw;
+      this.fetchBonusTable();
       for (let entry of Array.from(this.aoePlayerMap.entries())) {
         let name = entry[0];
         let fpl_id = entry[1];
@@ -135,6 +159,7 @@ class DashboardViewModel {
       // let livePoints = 0;
       let totalPoints = currPoints.valueOf();
       if(!CommonUtils.finished){
+        if(livePoints)
         totalPoints = totalPoints + livePoints.valueOf();
       }
 
@@ -180,15 +205,31 @@ class DashboardViewModel {
     }));
 
     let info: String = '';
+    let i = 0;
     for (let entry of Array.from(mapCapGw.entries())) {
+      i = i+1;
+      if(i === 1){
+        this.mostAoeCaptained = entry[0];
+        this.mostAoeCaptainedNo = entry[1];
+      }
       let name = entry[0];
       let count = entry[1];
       info = info+name+":"+count+",";
+      let ele = {name: name, count: count, group: 'Captain'};
+      this.mostAoeCappedList.push(ele);
     }
     this.gwCapInfo(info.substring(0, info.length-1));
 
+    let fplPlayerPicUrl: String = "https://resources.premierleague.com/premierleague/photos/players/110x140/p";
+    let code = this.codeMap.get(this.mostAOETransferredOut());
+    let playerPic = fplPlayerPicUrl+ '' + code+".png";
+    this.mostAOETransferredOutPic(playerPic);
+    code = this.codeMap.get(this.mostAOETransferredIn());
+    playerPic = fplPlayerPicUrl+ '' + code+".png";
+    this.mostAOETransferredInPic(playerPic);
 
     this.loadTransTable(true);
+    this.mostAoeCappedDataProvider(new ArrayDataProvider(this.mostAoeCappedList));
   };
 
   private fetchTransfers(fpl_id: number){
@@ -200,8 +241,11 @@ class DashboardViewModel {
           const resResult: FPLTransfers[] = <FPLTransfers[]>res;
           resResult.forEach(ele => {
             if(ele.event === this.curr_gw){
+              this.codeMap.set(CommonUtils.fplPlayerMap.get(ele.element_in).web_name, CommonUtils.fplPlayerMap.get(ele.element_in).code);
+              this.codeMap.set(CommonUtils.fplPlayerMap.get(ele.element_out).web_name, CommonUtils.fplPlayerMap.get(ele.element_out).code);
               transfersMap.set(CommonUtils.fplPlayerMap.get(ele.element_in).web_name, CommonUtils.fplPlayerMap.get(ele.element_out).web_name);
             }
+            console.log("this "+this.codeMap)
             resolve(transfersMap);
           })
         });
@@ -343,6 +387,74 @@ class DashboardViewModel {
           });
         })
   }
+
+    fetchBonusTable(){
+      let promises = [];
+      let i = 0;
+      for(i = 1; i <= this.curr_gw ; i++){
+          const promise = this.fetchBonusPerWeek(i);    
+          promises.push(promise);
+          promise.then(res => {
+            let bonusArr: Bonus[] = <Bonus[]>res;
+          bonusArr.forEach(bonusgw => {
+            if(this.bonusPlayerMap.has(bonusgw.name)){
+              let count= this.bonusPlayerMap.get(bonusgw.name);
+              this.bonusPlayerMap.set(bonusgw.name, count+1);
+            }
+            else{
+              this.bonusPlayerMap.set(bonusgw.name, 1);
+            }
+
+            if(this.bonusTeamMap.has(bonusgw.team)){
+              let count=  this.bonusTeamMap.get(bonusgw.team);
+              this.bonusTeamMap.set(bonusgw.team, count+1)
+            }
+            else{
+              this.bonusTeamMap.set(bonusgw.team, 1);
+            }
+          })
+
+          });
+        }
+
+      Promise.all(promises).then(res => {
+        var bonusTeamSortMap = new Map([...this.bonusTeamMap.entries()].sort(function(a, b) {
+          if (a[1] > b[1]) return -1;
+          if (a[1] < b[1]) return 1;
+          /* else */ return 0;
+        }));
+  
+        var bonusPlayerSortMap = new Map([...this.bonusPlayerMap.entries()].sort(function(a, b) {
+          if (a[1] > b[1]) return -1;
+          if (a[1] < b[1]) return 1;
+          /* else */ return 0;
+        }));
+  
+        for (let entry of Array.from(bonusPlayerSortMap.entries())) {
+          let ele = {"player": entry[0], "count" : entry[1]};
+          this.bonusPlayerTableList.push(ele);
+        }
+  
+        for (let entry of Array.from(bonusTeamSortMap.entries())) {
+          let ele = {"team": entry[0], "count" : entry[1]};
+          this.bonusTeamTableList.push(ele);
+        }
+  
+        this.bonusPlayerDataProvider(new ArrayDataProvider(this.bonusPlayerTableList));
+        this.bonusTeamDataProvider(new ArrayDataProvider(this.bonusTeamTableList));
+      });
+    }
+
+    private fetchBonusPerWeek(gameweek: number){
+      return new Promise((resolve) => {
+        fetch(this.bonusCandidateUrl+ gameweek).
+        then(res => res.json())
+        .then(res => {        
+          let bonusArr: Bonus[] = <Bonus[]>res;
+          resolve(bonusArr);
+        });
+      })
+    }
 
   }
 

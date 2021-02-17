@@ -1,0 +1,51 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+ <div class="oj-hybrid-applayout-page">
+    <!-- This is where your main page content will be loaded -->
+    <div class="oj-applayout-content">
+      <div role="main" class="oj-hybrid-applayout-content">
+        <div class="oj-hybrid-padding">
+          <oj-label for="text-input">FPL ID</oj-label>
+          <oj-input-number value={{fplId}} min=0 max=99999999 step=0></oj-input-number>
+          <div>
+            <oj-button on-oj-action="[[onLoadCaptainsTable]]">
+              <oj-bind-text value="See Captain Selections"></oj-bind-text>
+            </oj-button>
+          </div>
+          <h7>Note : To Know Your FPL ID, Click on View Gameweek History and you will see below URL with your ID.
+            https://fantasy.premierleague.com/entry/< FPL_ID>/history</h7>
+        </div>
+  
+        <oj-bind-if test="[[showCaptainTable]]">
+          <div style="width: 1px; min-width: 100%;">
+            <oj-list-view id="captainList" aria-label="cap list" data="[[captainPicksDataProvider]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                <li>
+                  <oj-list-item-layout>
+                    <oj-avatar slot="leading" size="xs" src="{{item.data.image}}"></oj-avatar>
+                    <div class="oj-typography-body-md oj-typography-bold">
+                      <br><b>GW :</b>
+                      <oj-bind-text value="[[item.data.gw]]"></oj-bind-text>
+                    </div>
+                    <div slot="secondary" class="oj-typography-body-sm">
+                      <b>Name : </b>
+                      <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                    </div>
+                    <div slot="tertiary" class="oj-typography-body-xs oj-text-color-secondary">
+                      <div>
+                        <b>Points :</b>
+                        <oj-bind-text value="[[item.data.points]]"> </oj-bind-text>
+                      </div>
+                    </div>
+                    <oj-avatar size="xs" src="{{item.data.hit}}"></oj-avatar>
+                  </oj-list-item-layout>
+                </li>
+              </template>
+            </oj-list-view>
+          </div>
+        </oj-bind-if>
+      </div>
+    </div>
+  </div>
