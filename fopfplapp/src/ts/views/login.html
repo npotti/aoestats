@@ -1,0 +1,31 @@
+<div id="sampleDemo" style="background-color: #121212;" class="demo-padding demo-container">
+    <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+        <div style="height: 200px;">
+
+        </div>
+
+        <div class="oj-flex oj-sm-flex-items-initial
+        oj-sm-justify-content-center">
+            <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+                <oj-validation-group id="idValidationGrp">
+                    <oj-input-number id="fplid" value={{fplid}} min=0 max=99999999 step=0 required="true"></oj-input-number>   
+                </oj-validation-group>
+            </div>
+        </div>
+        <div style="height: 20px;">
+
+        </div>
+        <div class="oj-flex oj-sm-flex-items-initial
+        oj-sm-justify-content-center">
+        <oj-button on-oj-action="[[loadUserData]]">
+            <oj-bind-text value="Login"></oj-bind-text>
+        </oj-button>
+        <a style="padding-left: 10px; color:wheat" href="?root=dashboard">
+            <span style="color:wheat">
+              <oj-bind-text value="Guest"></oj-bind-text>
+            </span>
+        </a>
+        </div>
+
+    </div>
+</div>

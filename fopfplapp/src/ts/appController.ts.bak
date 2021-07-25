@@ -71,11 +71,11 @@ class RootViewModel {
     if (mdQuery){
       this.mdScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(mdQuery);
     }
-
+    
     // router setup
     this.router = Router.rootInstance;
     this.router.configure({
-      "dashboard": {label:"Dashboard"},
+      "dashboard": {label:"Dashboard", isDefault: true},
       "aoe": {label: "AOE"},
       "teams": {label: "Teams"},
       "players": {label: "Players"},
@@ -91,8 +91,7 @@ class RootViewModel {
       "remplayers" : {label: "Live Players Remaining"},
       "rivals": {label: "Rivals"},
       "fff": {label: "FFF Live Tracking"},
-      "transferanalysis": {label: "Transfer Analysis"},
-      "login": {label: "Login", isDefault: true}
+      "transferanalysis": {label: "Transfer Analysis"}
     });
 
     Router.defaults.urlAdapter = new Router.urlParamAdapter();

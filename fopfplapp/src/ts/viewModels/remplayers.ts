@@ -30,7 +30,11 @@ class RemPlayersViewModel {
   remPlyTableList: ko.ObservableArray = ko.observableArray([]);
   remPlyDataProvider: ko.Observable = ko.observable();
 
+  cupRemPlyTableList: ko.ObservableArray = ko.observableArray([]);
+  cupRemPlyDataProvider: ko.Observable = ko.observable();
+
   teamRemPlyMap: Map<String, Map<String, Number>> = new Map<String, Map<String, Number>>();
+  cupTeamRemPlyMap: Map<String, Map<String, Number>> = new Map<String, Map<String, Number>>();
 
   constructor() {
     const promises = [];
@@ -42,6 +46,7 @@ class RemPlayersViewModel {
 
     Promise.all(promises).then((res) => {
         this.teamRemPlyMap.clear();
+        this.cupTeamRemPlyMap.clear();
         fetch(this.bonusUrl+CommonUtils.curr_gw+"/")
           .then((res) => res.json())
           .then((res) => {
@@ -50,10 +55,13 @@ class RemPlayersViewModel {
                 if(!this.teamRemPlyMap.has(ply.team)){
                     let plyMap = new Map<String, Number>();
                     this.teamRemPlyMap.set(ply.team, plyMap);
+                    let cupPlyMap = new Map<String, Number>();
+                    this.cupTeamRemPlyMap.set(ply.team, cupPlyMap);
                 }
                 ply.squad.forEach(remPly => {
                     if(remPly.color === 0){
                         let plyMap = this.teamRemPlyMap.get(ply.team);
+                        let cupPlyMap = this.cupTeamRemPlyMap.get(ply.team);
                         let name = remPly.name;
                         let multiplier = 1;
                         if(name.endsWith(")")){
@@ -63,6 +71,7 @@ class RemPlayersViewModel {
 
                         if(plyMap.has(name)){
                             let count: any = plyMap.get(name);
+                            let cupCount: any = cupPlyMap.get(name);
                             if(ply.is_captain){
                               count = count.valueOf()+(2*multiplier);
                             }
@@ -75,7 +84,9 @@ class RemPlayersViewModel {
                             else{
                               count= count.valueOf()+(1*multiplier);
                             }
+                            cupCount = cupCount.valueOf()+(1*multiplier);;
                             plyMap.set(name, count);
+                            cupPlyMap.set(name, cupCount);
                         }
                         else{
                           if(ply.is_captain){
@@ -90,26 +101,38 @@ class RemPlayersViewModel {
                           else{
                             plyMap.set(name, 1*multiplier);
                           }
+                          cupPlyMap.set(name, multiplier);
                         }
                     }
                 })
             })
             CommonUtils.aoeTeams.forEach(team =>{
                   let remPlyStr = '';
+                  let cupRemPlyStr = '';
                   let count = 0;
+                  let cupCount = 0;
     
                   if(this.teamRemPlyMap.has(team.name)){
                     let remPlyMap = this.teamRemPlyMap.get(team.name);
+                    let cupRemPlyMap = this.cupTeamRemPlyMap.get(team.name);
                     for (let entry of Array.from(remPlyMap.entries())) {
                         remPlyStr = remPlyStr+ entry[0] + "("+entry[1]+"),";
                         count = count.valueOf()+entry[1].valueOf();
                     }
+                    for (let entry of Array.from(cupRemPlyMap.entries())) {
+                      cupRemPlyStr = cupRemPlyStr+ entry[0] + "("+entry[1]+"),";
+                      cupCount = cupCount.valueOf() + entry[1].valueOf();
+                    }
                     let ele = {"team": team.name, "count":count, "plyrsRem" : remPlyStr.substring(0, remPlyStr.length-1)};
                     this.remPlyTableList.push(ele);
+                    let ele1 = {"team": team.name, "count":cupCount, "plyrsRem" : cupRemPlyStr.substring(0, cupRemPlyStr.length-1)};
+                    this.cupRemPlyTableList.push(ele1);
                   }
                   else{
                     let ele = {"team": team.name, "count":0, "plyrsRem" : "NA"};
                     this.remPlyTableList.push(ele);
+                    let ele1 = {"team": team.name, "count":0, "plyrsRem" : "NA"};
+                    this.cupRemPlyTableList.push(ele1);
                   }
     
                   
@@ -122,9 +145,20 @@ class RemPlayersViewModel {
                     }
                     return 0;
                   })
+
+                  this.cupRemPlyTableList.sort((a,b) => {
+                    if(a.count > b.count){
+                      return -1;
+                    }
+                    if(a.count < b.count){
+                      return 1;
+                    }
+                    return 0;
+                  })
               })
           });
         this.remPlyDataProvider(new ArrayDataProvider(this.remPlyTableList));
+        this.cupRemPlyDataProvider(new ArrayDataProvider(this.cupRemPlyTableList));
     });
   }
 

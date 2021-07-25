@@ -4,19 +4,39 @@ import {FPLBootStrap, Team, Element} from '../interfaces/bootstrap';
 import * as ko from "knockout";
 import { Picks } from "../interfaces/picks";
 import { ElementSummary } from "../interfaces/elementsummary";
+import { LiveScores } from "../interfaces/livescores";
 
 class CommonUtils{
 
   aoeTeamsUrl: string = 'https://fopfpl.in/aoe/api/teams';
+  livescoresUrl: string = 'https://fopfpl.in/aoe/api/player_live_scores';
   aoeTeams: AoeTeam[] = [];
   fplBaseUrl: string = 'https://fantasy.premierleague.com/api/';
   public fplPlayerMap = new Map<Number, Element>();
   public fplTeamsMap = new Map<Number, Team>();
   curr_gw: number = 1;
   finished: boolean = false;
-  fplId: ko.Observable<Number> = ko.observable(0);
+  public fplId: ko.Observable<Number> = ko.observable(0);
   fplYcMap = new Map<String, Number>();
   public userPicksMap = new Map<Number, Picks>();
+
+  public name: ko.Observable<string> = ko.observable("");
+  public team: ko.Observable<string> = ko.observable("");
+  public isFFFVisible: ko.Observable<string> = ko.observable("Y");
+  public isRRVisible: ko.Observable<string> = ko.observable("Y");
+  public isFOPVisible: ko.Observable<string> = ko.observable("Y");
+  public isCupVisible: ko.Observable<string> = ko.observable("Y");
+  public isPodcastVisible: ko.Observable<string> = ko.observable("Y");
+  public isLMSVisible: ko.Observable<string> = ko.observable("Y");
+  public isYCVisible: ko.Observable<string> = ko.observable("Y");
+  public isSetpieceVisible: ko.Observable<string> = ko.observable("Y");
+  public isCapPicksVisible: ko.Observable<string> = ko.observable("Y");
+  public isTransferVisible: ko.Observable<string> = ko.observable("Y");
+  public isStatsVisible: ko.Observable<string> = ko.observable("Y");
+  public isTStatsVisible: ko.Observable<string> = ko.observable("Y");
+  public isPStatsVisible: ko.Observable<string> = ko.observable("Y");
+  public isInjuriesVisible: ko.Observable<string> = ko.observable("Y");
+
 
   public fetchPicks(fpl_id: Number, gw: Number){
     return new Promise((resolve) =>{
@@ -81,6 +101,19 @@ class CommonUtils{
             const resResult: AoeTeam[] = <AoeTeam[]>res;
             this.aoeTeams = resResult;  
             resolve((this.aoeTeams));
+          })
+    })
+  }
+
+  
+  fetchPlayerLiveScores(){
+    return new Promise((resolve) => {
+      let urlFinal: string = this.livescoresUrl;
+      fetch(urlFinal).
+      then(res => res.json())
+          .then(res => {
+            const resResult: LiveScores[] = <LiveScores[]>res;
+            resolve((resResult));
           })
     })
   }

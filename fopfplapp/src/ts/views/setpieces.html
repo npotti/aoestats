@@ -2,14 +2,16 @@
  Copyright (c) 2014, 2020, Oracle and/or its affiliates.
  The Universal Permissive License (UPL), Version 1.0
  -->
- <div class="oj-hybrid-applayout-page" :style.background-image = "url('css/images/injuries.jpg')">
+ <div class="oj-hybrid-applayout-page" style="margin-top: -15px; background-color: #121212; color: white;">
     <!-- This is where your main page content will be loaded -->
     <div class="oj-applayout-content">
       <div role="main" class="oj-hybrid-applayout-content">
         <div class="oj-hybrid-padding">
-
-          <div :class="transinjuriesbox">
-          <oj-list-view id="setpieceslist" aria-label="list with setpieces" data="[[setPiecesDataProvider]]"
+          <oj-label>
+            <h4 style="color: wheat"><oj-bind-text value="Set-Piece Takers"></oj-bind-text></h4>
+          </oj-label>
+          <div :class="transcupbox">
+          <oj-list-view style="color:white" id="setpieceslist" aria-label="list with setpieces" data="[[setPiecesDataProvider]]"
             class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
             <template slot="itemTemplate" data-oj-as="item">
               <li>

@@ -33,7 +33,7 @@ define(["require", "exports", "knockout", "ojs/ojmodule-element-utils", "ojs/ojr
             // router setup
             this.router = Router.rootInstance;
             this.router.configure({
-                "dashboard": { label: "Dashboard", isDefault: true },
+                "dashboard": { label: "Dashboard" },
                 "aoe": { label: "AOE" },
                 "teams": { label: "Teams" },
                 "players": { label: "Players" },
@@ -42,12 +42,15 @@ define(["require", "exports", "knockout", "ojs/ojmodule-element-utils", "ojs/ojr
                 "setpieces": { label: "Set Piece Specialists" },
                 "injuries": { label: "Injuries" },
                 "aoelive": { label: "AOE Cup" },
+                "grandfinale": { label: "Grand Finale" },
+                "royalrumble": { label: "Royal Rumble" },
                 "yctracking": { label: "YC Ban Tracking" },
                 "foplms": { label: "FOP LMS Tracking" },
                 "remplayers": { label: "Live Players Remaining" },
                 "rivals": { label: "Rivals" },
                 "fff": { label: "FFF Live Tracking" },
-                "transferanalysis": { label: "Transfer Analysis" }
+                "transferanalysis": { label: "Transfer Analysis" },
+                "login": { label: "Login", isDefault: true }
             });
             Router.defaults.urlAdapter = new Router.urlParamAdapter();
             // module config
@@ -59,6 +62,10 @@ define(["require", "exports", "knockout", "ojs/ojmodule-element-utils", "ojs/ojr
                 new NavDataItem({ name: "Team Level Stats", id: "teams", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24" }),
                 new NavDataItem({ name: "Player Level Stats", id: "players", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24" }),
                 new NavDataItem({ name: "AOE Cup", id: "aoelive",
+                    iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24" }),
+                new NavDataItem({ name: "Royal Rumble", id: "royalrumble",
+                    iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24" }),
+                new NavDataItem({ name: "Grand Finale", id: "grandfinale",
                     iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24" }),
                 new NavDataItem({ name: "FOP LMS Tracking", id: "foplms",
                     iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-location-icon-24" }),

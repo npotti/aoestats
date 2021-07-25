@@ -2,7 +2,7 @@
  Copyright (c) 2014, 2020, Oracle and/or its affiliates.
  The Universal Permissive License (UPL), Version 1.0
  -->
- <div class="oj-hybrid-applayout-page">
+ <div class="oj-hybrid-applayout-page" style="margin-top: -10px; background-color: #121212; color: white;";>
   <!-- This is where your main page content will be loaded -->
   <div class="oj-applayout-content">
     <div role="main" class="oj-hybrid-applayout-content">
@@ -31,7 +31,7 @@
         <!-- <oj-bind-text value="[[totalGain]]"></oj-bind-text> -->
 
         <div>
-        <oj-list-view id="transfersList" aria-label="list with transfers" data="[[transferDataProvider]]"
+        <oj-list-view style="color: white;" id="transfersList" aria-label="list with transfers" data="[[transferDataProvider]]"
           class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
           <template slot="itemTemplate" data-oj-as="item">
             <li>

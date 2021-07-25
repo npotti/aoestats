@@ -50,13 +50,15 @@
 
     <!-- Template for rendering navigation items shared between nav bar and nav list -->
     <script type="text/html" id="navTemplate">
-      <li><a href="#">
-        <span :class="[[$data['iconClass']]]"></span>
-        <oj-bind-text value="[[$data['name']]]"></oj-bind-text>
+      <li ><a href="#">
+        <!-- <span style="color: wheat;" :class="[[$data['iconClass']]]"></span> -->
+        <span style="color: wheat;">
+          <oj-bind-text value="[[$data['name']]]"></oj-bind-text>
+        </span>
       </a></li>
     </script>
 
-    <div id="globalBody" class="oj-web-applayout-page">
+    <div id="globalBody" style="background-color: #121212; color: white;" class="oj-web-applayout-page">
       <!--
          ** Oracle JET V8.3.0 web application navigation drawer pattern.
          ** Please see the demos under Cookbook/Patterns/App Shell: Web
@@ -66,14 +68,16 @@
          ** query size for a phone format and hidden until a user clicks on
          ** the header hamburger icon.
       -->
-      <div id="navDrawer" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
+      <div id="navDrawer" style="background-color: #121212; color: wheat;" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
         <oj-navigation-list data="[[navDataSource]]"
                             edge="start"
+                            style="color: wheat"
                             item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                             on-click="[[toggleDrawer]]"
                             selection="{{router.stateId}}">
         </oj-navigation-list>
       </div>
+   
       <div id="pageContent" class="oj-web-applayout-page">
         <!--
            ** Oracle JET V8.3.0 web application header pattern.
@@ -82,28 +86,36 @@
            ** on the JET website for more information on how to use this pattern.
         -->
         <header id="header">
-          <div style="padding-left:40px;" class="logo"><a href="index.html">FOP  <span>Football Our Passion</span></a></div>
+          <div style="margin-left:40px; margin-top: 5px;color:wheat; font-weight: bolder; font-size: 25px;" class="logo"><a style="color:wheat" href="index.html">FOP  <span style="color: white; font-size: 20px;">Football Our Passion</span></a></div>
 
-          <div class="oj-flex-bar-start oj-md-hide">
-            <oj-button id="drawerToggleButton" class="oj-button-lg" on-oj-action="[[toggleDrawer]]" chroming="half" display="icons">
+          <div class="oj-flex-bar-end">
+            <img style="margin-left: 330px; margin-top: -25px; width: 50px; height: 90px;   position: relative;
+            z-index: 2;" src="css/images/Emmys.png">
+          </div>
+
+          <oj-bind-if test="[[router.moduleConfig.name() !== 'login']]">
+          <div class="oj-flex-bar-start oj-md-hide" style="margin-top: -100px;">
+            <oj-button style="color: wheat;" id="drawerToggleButton" class="oj-button-lg" on-oj-action="[[toggleDrawer]]" chroming="half" display="icons">
               <span slot="startIcon" class="oj-web-applayout-offcanvas-icon"></span>
               <span>Application Navigation</span>
             </oj-button>
           </div>
-          <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+          <div role="navigation" style="color: wheat;" class="oj-web-applayout-max-width oj-web-applayout-navbar">
             <oj-navigation-list class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
+                                style="color: wheat;"
                                 data="[[navDataSource]]"
                                 edge="top"
                                 item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                                 selection="{{router.stateId}}">
             </oj-navigation-list>
           </div>
+          </oj-bind-if>
         </header>
         
-        <div id="space" style="height: 40px;">
+        <!-- <div id="space" style="height: 40px;">
 
 
-        </div>
+        </div> -->
         
         <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleConfig]]">
         </oj-module>
@@ -111,20 +123,7 @@
       </div>
     </div>
 
-    <!-- Footer -->
-			<footer id="footer">
-				<div class="container">
-					<ul class="icons">
-						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/groups/1614084348858848" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
-					</ul>
-				</div>
-				<div class="copyright">
-					&copy; FOP. All rights reserved.
-				</div>
-			</footer>
+  
     
     <script type="text/javascript" src="js/libs/require/require.js"></script>
     <script type="text/javascript" src="js/main.js"></script>

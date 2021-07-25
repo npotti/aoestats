@@ -1,0 +1,81 @@
+<div id="filmstrip-navarrows-example">
+
+<h2>Chozhas</h2>
+<strong>
+<oj-bind-text value="[[chozhasScore()]]"></oj-bind-text>
+</strong>
+
+<div id="filmStripDiv" class="oj-panel oj-sm-margin-4x">
+    <oj-film-strip id="filmStrip" 
+         arrow-placement="adjacent"
+         arrow-visibility="auto">
+      <oj-bind-for-each data="[[chozhasMap]]">
+        <template data-oj-as="chozhas">
+          <div class="oj-panel demo-filmstrip-item oj-bg-info-30 oj-sm-margin-2x 
+                      oj-typography-bold oj-text-color-primary"
+               :style.display="[[getItemInitialDisplay(chozhas.index)]]">
+            <strong>
+            <span><oj-bind-text value="[[chozhas.data.Name]]"></oj-bind-text></span>
+            </strong>
+            <br>
+            <span><oj-bind-text value="[[chozhas.data.Team]]"></oj-bind-text></span>
+            <br>
+            <span><oj-bind-text value="[[chozhas.data.gw35]]"></oj-bind-text></span>
+            <br>
+            <span><oj-bind-text value="[[chozhas.data.gw36]]"></oj-bind-text></span>
+            <br>
+            <strong>
+            <span><oj-bind-text value="[[chozhas.data.total]]"></oj-bind-text></span>
+            </strong>
+          </div>
+        </template>
+      </oj-bind-for-each>
+    </oj-film-strip>
+  </div>
+</div>
+
+<h2>Vijayanagara</h2>
+<strong>
+<oj-bind-text value="[[vijayangaraScore()]]"></oj-bind-text>
+</strong>
+
+<div id="filmStripDiv2" class="oj-panel oj-sm-margin-4x">
+    <oj-film-strip id="filmStrip2" 
+         arrow-placement="adjacent"
+         arrow-visibility="auto">
+      <oj-bind-for-each data="[[vijayanagaraMap]]">
+        <template data-oj-as="vijayanagara">
+          <div class="oj-panel demo-filmstrip-item oj-bg-info-30 oj-sm-margin-2x 
+                      oj-typography-bold oj-text-color-primary"
+               :style.display="[[getItemInitialDisplay(vijayanagara.index)]]">
+            <strong>
+            <span><oj-bind-text value="[[vijayanagara.data.Name]]"></oj-bind-text></span>
+            </strong>
+            <br>
+            <span><oj-bind-text value="[[vijayanagara.data.Team]]"></oj-bind-text></span>
+            <br>
+            <span><oj-bind-text value="[[vijayanagara.data.gw35]]"></oj-bind-text></span>
+            <br>
+            <span><oj-bind-text value="[[vijayanagara.data.gw36]]"></oj-bind-text></span>
+            <br>
+            <strong>
+            <span><oj-bind-text value="[[vijayanagara.data.total]]"></oj-bind-text></span>
+            </strong>
+          </div>
+        </template>
+      </oj-bind-for-each>
+    </oj-film-strip>
+  </div>
+</div>
+
+<oj-button on-oj-action="[[loadDiffs]]">
+  <oj-bind-text value="Load Diffs"></oj-bind-text>
+</oj-button>
+
+<h2>Chozhas Live Differentials</h2>
+<oj-bind-text value="[[chozhasDiffs]]"></oj-bind-text>
+
+<h2>Vijayanagara Live Differentials</h2>
+<oj-bind-text value="[[vijayanagaraDiffs]]"></oj-bind-text>
+
+</div>

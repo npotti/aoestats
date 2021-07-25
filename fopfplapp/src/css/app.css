@@ -6,6 +6,21 @@
         This is where any of your application specific styles should be included
 */
 
+
+.demo-tile {
+  
+          font-weight: bold;
+  
+        }
+  
+        
+  
+        .demo-scroll-container {
+  
+          overflow: auto;
+  
+        }
+
 div.transbox {
     margin: 30px;
     background-color: #ffffff;
@@ -14,11 +29,18 @@ div.transbox {
     color: #000000;
   }
 
-  div.translessmarginbox {
-    margin: 15px;
+  div.homebox {
+    margin: 30px;
     background-color: #ffffff;
     border: 1px solid black;
-    opacity: 0.7;
+    color: #000000;
+  }
+
+  div.translessmarginbox {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    border: 1px solid black;
     color: #000000;
   }
 
@@ -42,8 +64,7 @@ div.transbox {
 
   div.transcupbox {
     margin: 30px;
-    background-color: #9ca6fd;
-    border: 1px solid black;
+    border: 1px solid wheat;
     opacity: 0.7;
     color: #000000;
   }
@@ -54,4 +75,23 @@ div.transbox {
     border: 1px solid black;
     opacity: 0.7;
     color: #000000;
+  }
+
+  .demo-filmstrip-item {
+    box-sizing: border-box;
+    background-color: goldenrod;
+    width: 12rem;
+    height: 12rem;
+    text-align: center;
+    color: indigo;
+  }
+  
+  .demo-arrow-controls {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .demo-arrow-visibility-controls {
+    display: inline-block; 
+    vertical-align: top;      
   }

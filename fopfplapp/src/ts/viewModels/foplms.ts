@@ -25,7 +25,7 @@ import { ojButtonEventMap } from "ojs/ojbutton";
 
 class FOPLMSViewModel {
   lmsUrl: string =
-    "https://fantasy.premierleague.com/api/leagues-classic/133431/standings/";
+    "https://fantasy.premierleague.com/api/leagues-classic/10701/standings/";
 
   lmsTableList: ko.ObservableArray = ko.observableArray([]);
   lmsDataProvider: ko.Observable = ko.observable();

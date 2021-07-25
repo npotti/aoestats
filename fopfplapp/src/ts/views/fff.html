@@ -3,12 +3,14 @@
  The Universal Permissive License (UPL), Version 1.0
  -->
  <div class="oj-hybrid-applayout-page" 
- :style.background-image = "url('css/images/lolbg.png')";>
+ style="background-color: #121212; color: white;">
     <!-- This is where your main page content will be loaded -->
     <div class="oj-applayout-content">
       <div role="main" class="oj-hybrid-applayout-content">
         <div class="oj-hybrid-padding">
-
+          <oj-label>
+            <h2 style="color: wheat"><oj-bind-text value="FOP Football Federation"></oj-bind-text></h2>
+          </oj-label>
             <div id='menubutton-container'>
                 <oj-menu-button id="menuButton">
                   <span slot="startIcon" class="oj-ux-ico-share"></span>
@@ -30,9 +32,9 @@
                   </oj-menu>
                 </oj-menu-button>
               </div>
-        <div :class="transbox">
+        <div :class="transcupbox">
             <!-- //{{selectedMenuItem() === 'lol' ? 'transbox' : ''}} -->
-          <oj-list-view id="lmsList" aria-label="list LMSs" data="[[fffDataProvider]]"
+          <oj-list-view id="lmsList" style="color:white" aria-label="list LMSs" data="[[fffDataProvider]]"
             class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
             <template slot="itemTemplate" data-oj-as="item">
               <li>

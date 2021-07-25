@@ -2,15 +2,18 @@
  Copyright (c) 2014, 2020, Oracle and/or its affiliates.
  The Universal Permissive License (UPL), Version 1.0
  -->
- <div class="oj-hybrid-applayout-page"
- :style.background-image = "url('css/images/AoE.jpg')";>
+ <div class="oj-hybrid-applayout-page" style="margin-top: -10px; background-color: #121212; color: white;">
     <!-- This is where your main page content will be loaded -->
     <div class="oj-applayout-content">
       <div role="main" class="oj-hybrid-applayout-content">
-        <div class="oj-hybrid-padding"  style="width: 1px; min-width: 100%;">
+        <div class="oj-hybrid-padding" >
+
+          <oj-label>
+            <b><h4 style='color:wheat'><oj-bind-text value="AOE Live Remaining Players Tracking"></oj-bind-text></h4></b>
+          </oj-label>
   
-          <div :class="translessmarginbox">
-          <oj-list-view id="lmsList" aria-label="list LMSs" data="[[remPlyDataProvider]]"
+          <div :class="transcupbox">
+          <oj-list-view style="color:white" id="lmsList" aria-label="list LMSs" data="[[remPlyDataProvider]]"
             class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="visible">
             <template slot="itemTemplate" data-oj-as="item">
               <li>
@@ -31,6 +34,37 @@
             </template>
           </oj-list-view>
         </div>
+
+        <br>
+        <br>
+
+        <oj-label>
+          <b><h4 style='color:wheat'><oj-bind-text value="AOE Cup Live Remaining Players Tracking"></oj-bind-text></h4></b>
+        </oj-label>
+
+        <div :class="transcupbox">
+          <oj-list-view style="color:white" id="lmsList" aria-label="list LMSs" data="[[cupRemPlyDataProvider]]"
+            class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="visible">
+            <template slot="itemTemplate" data-oj-as="item">
+              <li>
+                <oj-list-item-layout>
+                  <b>
+                    <oj-bind-text slot="leading" value="[[item.data.team]]"></oj-bind-text>
+                  </b>
+                  <div class="oj-typography-body-md oj-typography-bold">
+                    <br><b>Count :</b>
+                    <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
+                  </div>
+                  <div slot="secondary" class="oj-typography-body-sm" style=" white-space:normal;word-wrap:break-word; text-align: left;vertical-align: top;">
+                    <b>Players Remaining : </b>
+                    <oj-bind-text value="[[item.data.plyrsRem]]"></oj-bind-text>
+                  </div>
+                </oj-list-item-layout>
+              </li>
+            </template>
+          </oj-list-view>
+        </div>
+
         </div>
       </div>
     </div>

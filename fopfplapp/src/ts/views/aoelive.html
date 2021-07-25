@@ -2,20 +2,20 @@
  Copyright (c) 2014, 2020, Oracle and/or its affiliates.
  The Universal Permissive License (UPL), Version 1.0
  -->
-<div class="oj-hybrid-applayout-page" :style.background-image = "url('css/images/ucltrophy.jpg')";>
+<div class="oj-hybrid-applayout-page" style="margin-top: -15px; background-color: #121212;">
     <!-- This is where your main page content will be loaded -->
     <div class="oj-applayout-content">
         <div role="main" class="oj-hybrid-applayout-content">
             <div class="oj-hybrid-padding">
                 <oj-label>
-                    <b><h2 style='color:goldenrod'><oj-bind-text value="AOE Cup Live Qualification Tracking"></oj-bind-text></h2></b>
+                    <b><h4 style='color:wheat'><oj-bind-text value="AOE Cup Live Qualification Tracking"></oj-bind-text></h4></b>
                   </oj-label>
                 
                 <div :class="transcupbox">
                     <oj-list-view id="qualList" aria-label="qual list" data="[[liveDataProvider]]" gridlines.item="hidden">
                         <template slot="itemTemplate" data-oj-as="item">
                             <li>
-                                <span :style.color="{{(item.data.order > 8 ? 'red' : 'green')}}">
+                                <span :style.color="{{(item.data.order > 8 ? 'orangered' : 'lightgreen')}}">
                                 <oj-list-item-layout>
                                     <div class="oj-typography-body-md oj-typography-bold">
                                         <b>Team :</b>
@@ -32,5 +32,50 @@
                         </template>
                     </oj-list-view>
                 </div>
+
+                <br>
+                <br>
+
+                <div :class="transcupbox">
+                    <oj-list-view id="qualList" aria-label="qual list" data="[[koDataProvider]]" gridlines.item="hidden">
+                        <template slot="itemTemplate" data-oj-as="item">
+                            <li>
+                                <oj-list-item-layout>
+                                    <span :style.color="{{(item.data.teamAscore > item.data.teamBscore ? 'lightgreen' : 'orangered')}}">
+                                    <div>
+                                    <div class="oj-typography-body-md oj-typography-bold">
+                                        <b>Team A :</b>
+                                        <oj-bind-text value="[[item.data.teamA]]" 
+                                        ></oj-bind-text>
+                                    </div>
+                                    <div slot="secondary" class="oj-typography-body-sm">
+                                        <b>Score : </b>
+                                        <oj-bind-text value="[[item.data.teamAscore]]"></oj-bind-text>
+                                    </div>
+                                    </div>
+                                    </span>
+                                    <span :style.color="{{(item.data.teamBscore > item.data.teamAscore ? 'lightgreen' : 'orangered')}}">
+                                    <div>
+                                    <div class="oj-typography-body-md oj-typography-bold">
+                                        <b>Team B :</b>
+                                        <oj-bind-text value="[[item.data.teamB]]" 
+                                        ></oj-bind-text>
+                                    </div>
+                                    <div slot="secondary" class="oj-typography-body-sm">
+                                        <b>Score : </b>
+                                        <oj-bind-text value="[[item.data.teamBscore]]"></oj-bind-text>
+                                    </div>
+                                    <div slot="secondary" class="oj-typography-body-sm">
+                                        <b>Round : </b>
+                                        <oj-bind-text value="[[item.data.round]]"></oj-bind-text>
+                                    </div>
+                                    </div>
+                                    </span>
+                                </oj-list-item-layout>
+                            </li>
+                        </template>
+                    </oj-list-view>
+                </div>
+
             </div>
         </div>

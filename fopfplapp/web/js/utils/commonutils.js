@@ -4,6 +4,7 @@ define(["require", "exports", "knockout"], function (require, exports, ko) {
     class CommonUtils {
         constructor() {
             this.aoeTeamsUrl = 'https://fopfpl.in/aoe/api/teams';
+            this.livescoresUrl = 'https://fopfpl.in/aoe/api/player_live_scores';
             this.aoeTeams = [];
             this.fplBaseUrl = 'https://fantasy.premierleague.com/api/';
             this.fplPlayerMap = new Map();
@@ -13,6 +14,22 @@ define(["require", "exports", "knockout"], function (require, exports, ko) {
             this.fplId = ko.observable(0);
             this.fplYcMap = new Map();
             this.userPicksMap = new Map();
+            this.name = ko.observable("");
+            this.team = ko.observable("");
+            this.isFFFVisible = ko.observable("Y");
+            this.isRRVisible = ko.observable("Y");
+            this.isFOPVisible = ko.observable("Y");
+            this.isCupVisible = ko.observable("Y");
+            this.isPodcastVisible = ko.observable("Y");
+            this.isLMSVisible = ko.observable("Y");
+            this.isYCVisible = ko.observable("Y");
+            this.isSetpieceVisible = ko.observable("Y");
+            this.isCapPicksVisible = ko.observable("Y");
+            this.isTransferVisible = ko.observable("Y");
+            this.isStatsVisible = ko.observable("Y");
+            this.isTStatsVisible = ko.observable("Y");
+            this.isPStatsVisible = ko.observable("Y");
+            this.isInjuriesVisible = ko.observable("Y");
         }
         fetchPicks(fpl_id, gw) {
             return new Promise((resolve) => {
@@ -73,6 +90,17 @@ define(["require", "exports", "knockout"], function (require, exports, ko) {
                     const resResult = res;
                     this.aoeTeams = resResult;
                     resolve((this.aoeTeams));
+                });
+            });
+        }
+        fetchPlayerLiveScores() {
+            return new Promise((resolve) => {
+                let urlFinal = this.livescoresUrl;
+                fetch(urlFinal).
+                    then(res => res.json())
+                    .then(res => {
+                    const resResult = res;
+                    resolve((resResult));
                 });
             });
         }
