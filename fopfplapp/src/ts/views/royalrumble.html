@@ -15,19 +15,34 @@
           <oj-list-view id="lmsList" style="color:white" aria-label="list LMSs" data="[[rrDataProvider]]"
             class="demo-list-view  oj-sm-padding-2x-vertical" gridlines.item="hidden">
             <template slot="itemTemplate" data-oj-as="item">
+              <div :style.background-color="{{(item.data.currUser === 'Y' ? 'white' : '')}}">
               <li>
-                <oj-list-item-layout>
+                <oj-list-item-layout >
                   <b>
-                    <span style="color: wheat">
-                    <oj-bind-text style="color:wheat !important" slot="leading" value="[[item.data.name]]"></oj-bind-text>
+                    <span :style.color="{{(item.data.currUser === 'Y' ? 'black' : 'wheat')}}">
+                    <oj-bind-text slot="leading" value="[[item.data.name]]"></oj-bind-text>
                     </span>
                   </b>
                   <br/>
-                  <oj-bind-text value="[[item.data.players]]"></oj-bind-text>
                   <br/>
+                  <!-- <oj-bind-text value="[[item.data.players]]"></oj-bind-text> -->
+                  <!-- <br/> -->
+                  <span :style.color="{{(item.data.currUser === 'Y' ? 'black' : 'white')}}">
+                  <oj-bind-text value="[[item.data.playerA]]"></oj-bind-text>
+                  <oj-bind-text value="[[item.data.scoreA]]"></oj-bind-text>
+                  </span>
+                  <br/>
+                  <span :style.color="{{(item.data.currUser === 'Y' ? 'black' : 'white')}}">
+                  <oj-bind-text value="[[item.data.playerB]]"></oj-bind-text>
+                  <oj-bind-text value="[[item.data.scoreB]]"></oj-bind-text>
+                  </span>
+                  <br/>
+                  <span :style.color="{{(item.data.currUser === 'Y' ? 'black' : 'white')}}">
                   <b><oj-bind-text slot="primary" value="[[item.data.score]]"></oj-bind-text></b>
+                  </span>
                 </oj-list-item-layout>
               </li>
+              </div>
             </template>
           </oj-list-view>
         </div>

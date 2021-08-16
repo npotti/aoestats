@@ -76,14 +76,14 @@ class RootViewModel {
     this.router = Router.rootInstance;
     this.router.configure({
       "dashboard": {label:"Dashboard"},
-      "aoe": {label: "AOE"},
+      "aoe": {label: "TES"},
       "teams": {label: "Teams"},
       "players": {label: "Players"},
       "hfh": {label: "HFH"},
       "captains": {label: "Your Captain Picks"},
       "setpieces": {label: "Set Piece Specialists"},
       "injuries": {label: "Injuries"},
-      "aoelive": {label: "AOE Cup"},
+      "aoelive": {label: "TES Cup"},
       "grandfinale": {label: "Grand Finale"},
       "royalrumble": {label: "Royal Rumble"},
       "yctracking": {label: "YC Ban Tracking"},
@@ -103,10 +103,10 @@ class RootViewModel {
     // navigation setup
     let navData: NavDataItem[] = [
       new NavDataItem({name: "Dashboard", id: "dashboard", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-home-icon-24"}),
-      new NavDataItem({name: "AOE Level Stats", id: "aoe", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24"}),
+      new NavDataItem({name: "TES Level Stats", id: "aoe", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24"}),
       new NavDataItem({name: "Team Level Stats", id: "teams", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24"}),
       new NavDataItem({name: "Player Level Stats", id: "players", iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24"}),
-      new NavDataItem({name: "AOE Cup", id: "aoelive",
+      new NavDataItem({name: "TES Cup", id: "aoelive",
       iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24"}),
       new NavDataItem({name: "Royal Rumble", id: "royalrumble",
       iconClass: "oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24"}),

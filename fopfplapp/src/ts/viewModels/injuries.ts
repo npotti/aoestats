@@ -37,7 +37,7 @@ class InjuriesViewModel {
     const promise = CommonUtils.fetchFPLPlayers();
     promise.then((res) => {
       CommonUtils.fplPlayerMap.forEach((player) => {
-        if (player.chance_of_playing_this_round === 0) {
+        if (player.chance_of_playing_next_round === 0) {
           let teamName = CommonUtils.fplTeamsMap.get(player.team);
           if (this.team0OrderMap.has(teamName.name)) {
             console.log("1 : "+teamName.name+" , "+player.web_name);
@@ -51,7 +51,7 @@ class InjuriesViewModel {
             this.team0OrderMap.set(teamName.name, players);
           }
         }
-        if (player.chance_of_playing_this_round === 75) {
+        if (player.chance_of_playing_next_round === 75) {
           let teamName = CommonUtils.fplTeamsMap.get(player.team);
           if (this.team75OrderMap.has(teamName.name)) {
             console.log("1 : "+teamName.name+" , "+player.web_name);
@@ -65,7 +65,7 @@ class InjuriesViewModel {
             this.team75OrderMap.set(teamName.name, players);
           }
         }
-        if (player.chance_of_playing_this_round === 25) {
+        if (player.chance_of_playing_next_round === 25) {
           let teamName = CommonUtils.fplTeamsMap.get(player.team);
           if (this.team25OrderMap.has(teamName.name)) {
             console.log("1 : "+teamName.name+" , "+player.web_name);
@@ -79,7 +79,7 @@ class InjuriesViewModel {
             this.team25OrderMap.set(teamName.name, players);
           }
         }
-        if (player.chance_of_playing_this_round === 50) {
+        if (player.chance_of_playing_next_round === 50) {
           let teamName = CommonUtils.fplTeamsMap.get(player.team);
           if (this.team50OrderMap.has(teamName.name)) {
             console.log("1 : "+teamName.name+" , "+player.web_name);

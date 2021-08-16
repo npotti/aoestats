@@ -11,10 +11,6 @@ import { FPLBootStrap, Team, Element } from "../interfaces/bootstrap";
 import { Picks, Pick } from "../interfaces/picks";
 import { ElementSummary } from "../interfaces/elementsummary";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
-import { CapQuota } from "../interfaces/capquota";
-import { AoeLive } from "../interfaces/aoelive";
-import { FplMgrHistory, Chip, Current } from "../interfaces/fplmgrhistory";
-import { AoeTeam } from "../interfaces/aoeteams";
 
 import "ojs/ojtable";
 import "ojs/ojchart";
@@ -44,7 +40,7 @@ class AoeLiveViewModel {
             if(name === 'Fernandes'){
                 console.log("Fernandes :: "+count);
             }
-            if(count > 7 ){
+            if(count > 2 ){
                 let ele = {"name": name, "count": count};
                 this.ycTableList.push(ele);
             } 

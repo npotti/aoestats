@@ -7,7 +7,7 @@ import * as ModuleElementUtils from "ojs/ojmodule-element-utils";
 import { ojModule } from "ojs/ojmodule-element";
 import CommonUtils from "../utils/commonutils";
 
-import { FplLeagues } from "../interfaces/fplleagues";
+import { FplLeagues, Result } from "../interfaces/fplleagues";
 
 import { Pick, Picks } from "../interfaces/picks";
 import { FplMgrHistory } from "../interfaces/fplmgrhistory";
@@ -38,8 +38,20 @@ class FOPLMSViewModel {
       fetch(this.lmsUrl)
         .then((res) => res.json())
         .then((res) => {
-          const resResult: FplLeagues = <FplLeagues>res;
-          resResult.standings.results.forEach((team) => {
+          console.log("111111")
+          fetch(this.lmsUrl+"?page_standings=2")
+          .then((res2) => res2.json())
+          .then((res2) => {
+            console.log("121221")
+            let resResult: FplLeagues = <FplLeagues>res;
+            let resResult2: FplLeagues = <FplLeagues>res2;
+            let resList: Result[] = [];
+            console.log(resResult.standings.results.length);
+            console.log(resResult2.standings.results.length);
+            resList = resList.concat(resResult.standings.results);
+            resList = resList.concat(resResult2.standings.results);
+            console.log(resList.length)
+            resList.forEach((team) => {
             console.log("inside constructor 3 : "+team.entry);
             console.log("inside constructor 4 : "+CommonUtils.curr_gw);
             const promisePick = CommonUtils.fetchPicks(
@@ -119,6 +131,7 @@ class FOPLMSViewModel {
                 });
               })
             });
+          });
           });
         });
         Promise.all(promises).then(res => {

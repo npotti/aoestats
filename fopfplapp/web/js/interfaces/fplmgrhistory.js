@@ -1,5 +1,1 @@
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-});
-//# sourceMappingURL=fplmgrhistory.js.map
+define(["require","exports"],(function(require,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0})}));

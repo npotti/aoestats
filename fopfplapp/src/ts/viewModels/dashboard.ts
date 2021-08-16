@@ -83,7 +83,7 @@ class DashboardViewModel {
         inserted: ko.observable(
           CommonUtils.isLMSVisible() === "Y" ? true : false
         ),
-        desc: "Two Member Show",
+        desc: "Last Man Standing",
         link: "?root=foplms",
       },
       {

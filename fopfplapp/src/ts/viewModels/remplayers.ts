@@ -25,7 +25,7 @@ import { ojButtonEventMap } from "ojs/ojbutton";
 
 class RemPlayersViewModel {
   bonusUrl: string =
-    "https://fopfpl.in/aoe/api/players_remaining/";
+    "https://fopfpl.in/tes/api/players_remaining/";
 
   remPlyTableList: ko.ObservableArray = ko.observableArray([]);
   remPlyDataProvider: ko.Observable = ko.observable();

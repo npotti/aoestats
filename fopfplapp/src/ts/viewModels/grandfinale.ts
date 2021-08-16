@@ -34,7 +34,7 @@ interface TeamLocal {
 }
 
 class GrandFinaleViewModel {
-  bonusUrl: string = "https://fopfpl.in/aoe/api/players_remaining/";
+  bonusUrl: string = "https://fopfpl.in/tes/api/players_remaining/";
   curr_gw = 1;
   chozhasScore = ko.observable(0);
   vijayangaraScore = ko.observable(0);

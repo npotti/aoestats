@@ -1,18 +1,7 @@
-import {VegTallyPojo} from '../interfaces/vegtallypojo';
-import {FplMgrHistory, Chip, Current} from '../interfaces/fplmgrhistory';
-import {AoeTeam} from '../interfaces/aoeteams';
-import {Pick, Picks} from '../interfaces/picks';
-import {FPLBootStrap, Team} from '../interfaces/bootstrap';
-import {FPLTransfers} from '../interfaces/transfers';
-import {EOPojo} from '../interfaces/eopojo';
-import {CapQuota} from '../interfaces/capquota';
 import * as ArrayDataProvider from 'ojs/ojarraydataprovider';
 import * as ko from 'knockout';
 import "ojs/ojtable";
 import "ojs/ojchart";
-import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
-import { PagingModel } from "ojs/ojpagingmodel";
-import { ojButtonEventMap } from 'ojs/ojbutton';
 
 class AboutViewModel {
 

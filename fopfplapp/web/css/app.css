@@ -69,6 +69,13 @@ div.transbox {
     color: #000000;
   }
 
+  div.loginbox {
+    margin: 30px;
+    border: 1px solid wheat;
+    opacity: 0.7;
+    background-color: rgb(79, 113, 228);
+  }
+
   div.transinjuriesbox {
     margin: 30px;
     background-color: #9ca6fd;
@@ -95,3 +102,76 @@ div.transbox {
     display: inline-block; 
     vertical-align: top;      
   }
+
+  .oj-table-body {
+    border: 1px solid #b6bdc6;
+  }
+
+  .oj-table td{
+    color:white;
+  }
+
+  .oj-table-header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #194e95;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 2px;
+    border: #194e95;
+ }
+
+ --oj-chart-axis-title-text-color{
+   color:white !important;
+ }
+
+ --oj-chart-axis-tick-label-text-color{
+   color:white !important;
+ }
+
+ .demo-text-field-info {
+    
+  --oj-text-field-bg-color:        rgb(var(--oj-palette-info-rgb-10)) !important;
+  --oj-text-field-border-color:    rgb(var(--oj-palette-info-rgb-100))!important;
+  --oj-text-field-text-color:     rgb(var(--oj-palette-info-rgb-110)) !important;
+}
+
+.oj-inputnumber-input {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+.oj-button-jqui.oj-default.oj-button-full-chrome, .oj-button-jqui.oj-focus-only.oj-button-full-chrome, .oj-button-nocomp.oj-button-full-chrome, .oj-button.oj-default.oj-button-full-chrome .oj-button-button, .oj-button.oj-focus-only.oj-button-full-chrome .oj-button-button {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+.oj-menu-dropdown .oj-menu-item.oj-focus > a, .oj-menu-dropdown .oj-menu-item.oj-focus-ancestor > a {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+.oj-menu-dropdown .oj-menu-item > a {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+.oj-listview-item-element {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+.oj-searchselect-input {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+a .oj-clickable-icon, a.oj-clickable-icon, a.oj-clickable-icon-nocontext, a:visited .oj-clickable-icon, a:visited.oj-clickable-icon, a:visited.oj-clickable-icon-nocontext, .oj-default .oj-clickable-icon, .oj-default.oj-clickable-icon, .oj-default.oj-clickable-icon-nocontext {
+  color: wheat !important;
+  background-color:  black!important;
+}
+
+.oj-chart{
+  background-color: #faeed1
+}

@@ -1,37 +1,37 @@
-<div id='tableContainer' class="demo-padding demo-container">
-  <oj-button on-oj-action="[[onLoadTransferTable]]">
+<div id='tableContainer' class="demo-padding demo-container" style="color:white; background-color: black;">
+  <!-- <oj-button on-oj-action="[[onLoadTransferTable]]">
     <oj-bind-text value="Click to Load"></oj-bind-text>
-  </oj-button>
+  </oj-button> -->
 
   <oj-bind-if test={{loadTransTable}}>
     <oj-label>
-      <h3><oj-bind-text value="Most Transferred In"></oj-bind-text></h3>
+      <h3 style="color: wheat"><oj-bind-text value="Most Transferred In"></oj-bind-text></h3>
     </oj-label>
     <oj-avatar size="md" src="[[mostAOETransferredInPic]]"></oj-avatar>
     <oj-label>
-      <h3>
+      <h3 style="color: wheat">
         <oj-bind-text value="Most Transferred Out"></oj-bind-text>
       </h3>
     </oj-label>
     <oj-avatar size="md" src="[[mostAOETransferredOutPic]]"></oj-avatar>
     <oj-label>
-      <h3>
+      <h3 style="color: wheat">
         <oj-bind-text value="Captain Info"></oj-bind-text>
       </h3>
     </oj-label>
-   
 
-    <div id='chart-container'>
+    <div id='chart-container' style="color:white">
       <oj-chart id="pieChart"
           type="pie" 
           data="[[mostAoeCappedDataProvider]]"
           animation-on-display="auto"
           animation-on-data-change="auto"
           style-defaults.three-d-effect="off"
-          hover-behavior="dim">
+          hover-behavior="dim"
+          style="color:white">
   
           <template slot='itemTemplate' data-oj-as='item'>
-              <oj-chart-item 
+              <oj-chart-item style="color:white"
                 value='[[item.data.count]]'
                 group-id='[[[item.data.group]]]'
                 series-id='[[item.data.name]]'> 
@@ -40,11 +40,10 @@
       </oj-chart>
     </div>
 
-    <h1><oj-bind-text value="Live AOE Player League Table"></oj-bind-text></h1>
+    <h1 style="color: wheat"><oj-bind-text value="Live AOE Player League Table"></oj-bind-text></h1>
 
-    <oj-table id="aoeTransfers" aria-label="FPL Chip data" data='[[transferDataProvider]]'
-      selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
-      scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Player Name", 
+    <oj-table style="color: white !important; background-color: black !important;" id="aoeTransfers" aria-label="FPL Chip data" data='[[transferDataProvider]]'
+      selection-mode='{"row": "single", "column": "multiple"}' columns='[{"headerText": "Player Name", 
     "field": "player",
     "resizable": "enabled"},
     {"headerText": "GW Transfers", 
@@ -94,11 +93,11 @@
 
   <oj-bind-if test={{loadTransTable}}>
 
-    <oj-label>
-      <h3><oj-bind-text value="Hits Count"></oj-bind-text></h3>
-    </oj-label>
+    <span>
+      <h3 style="color: wheat"><oj-bind-text value="Hits Count"></oj-bind-text></h3>
+    </span>
 
-    <oj-table id="chipTable" aria-label="FPL Hit data" data='{{hitDataProvider}}'
+    <oj-table id="chipTable" style="color:white !important" aria-label="FPL Hit data" data='{{hitDataProvider}}'
       selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
       scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Player Name", 
       "field": "player"},
@@ -111,11 +110,11 @@
 
   <oj-bind-if test={{loadTransTable}}>
 
-    <oj-label>
-      <h3><oj-bind-text value="Bonus Per Team in Top 10 Chart"></oj-bind-text></h3>
-    </oj-label>
+    <span>
+      <h3 style="color: wheat"><oj-bind-text value="Bonus Per Team in Top 10 Chart"></oj-bind-text></h3>
+    </span>
 
-    <oj-table id="bonusTeam" aria-label="bonusTeamTable" data='{{bonusTeamDataProvider}}'
+    <oj-table id="bonusTeam" style="color:white !important" aria-label="bonusTeamTable" data='{{bonusTeamDataProvider}}'
       selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
       scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Team Name", 
       "field": "team"},
@@ -123,11 +122,11 @@
                       "field": "count"}]'>
     </oj-table>
 
-    <oj-label>
-      <h3><oj-bind-text value="Bonus Per Player in Top 10 Chart"></oj-bind-text></h3>
-    </oj-label>
+    <span>
+      <h3 style="color: wheat"><oj-bind-text value="Bonus Per Player in Top 10 Chart"></oj-bind-text></h3>
+   </span>
 
-    <oj-table id="bonusTeam" aria-label="FPL Hit data" data='{{bonusPlayerDataProvider}}'
+    <oj-table id="bonusTeam" style="color:white !important" aria-label="FPL Hit data" data='{{bonusPlayerDataProvider}}'
       selection-mode='{"row": "single", "column": "multiple"}' scroll-policy='loadMoreOnScroll'
       scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Player Name", 
       "field": "player"},

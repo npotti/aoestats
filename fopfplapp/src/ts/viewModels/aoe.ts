@@ -29,7 +29,7 @@ class CustomersViewModel {
   vegTallyDataProvider: ko.Observable<ArrayDataProvider<string, string>>;
   public chartObservableArray: ko.ObservableArray = ko.observableArray([]);
   chartObservable: ko.Observable = ko.observable();
-  tallyUrl: string = 'https://fopfpl.in/aoe/api/veg_tally';
+  tallyUrl: string = 'https://fopfpl.in/tes/api/veg_tally';
   curr_gw = 1;
   eoTableList: ko.ObservableArray = ko.observableArray([]);
   eoDataProvider:  ko.Observable = ko.observable();
@@ -43,9 +43,9 @@ class CustomersViewModel {
   chipStatusVisible: ko.Observable<Boolean> = ko.observable(false);
   livePlayerChartVisible: ko.Observable<Boolean> = ko.observable(false);
   datasource= ko.observableArray();
+  userTeam : ko.Observable<string> = ko.observable();
 
   constructor() {
-
     var self = this;
     var deptArray = [];
     var db = null;
@@ -70,6 +70,8 @@ class CustomersViewModel {
       for(i;i<=10;i++){
         this.fetchTeamVegTally(this.curr_gw,i);
       }
+      console.log("user team"+CommonUtils.team());
+      this.userTeam(CommonUtils.team());
     })
     const promise2 = this.fetchFplChipCounts();
     promise2.then(res => {
@@ -141,7 +143,7 @@ class CustomersViewModel {
   }
 
   private fetchCapQuota(): void{
-    fetch('https://fopfpl.in/aoe/api/game_week/scores/').
+    fetch('https://fopfpl.in/tes/api/game_week/scores/').
     then(res => res.json())
         .then(res => {
           const resResult: CapQuota[] = <CapQuota[]>res;

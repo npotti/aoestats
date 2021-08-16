@@ -1,21 +1,12 @@
-import {VegTallyPojo} from '../interfaces/vegtallypojo';
-import {FplMgrHistory, Chip, Current} from '../interfaces/fplmgrhistory';
+
 import {AoeTeam} from '../interfaces/aoeteams';
 import {Pick, Picks} from '../interfaces/picks';
-import {FPLBootStrap, Team} from '../interfaces/bootstrap';
-import {FPLTransfers} from '../interfaces/transfers';
-import {EOPojo} from '../interfaces/eopojo';
-import {CapQuota} from '../interfaces/capquota';
 import CommonUtils from '../utils/commonutils';
 import * as ArrayDataProvider from 'ojs/ojarraydataprovider';
 import * as ko from 'knockout';
 import "ojs/ojtable";
 import "ojs/ojchart";
 import "ojs/ojselectsingle";
-import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
-import { PagingModel } from "ojs/ojpagingmodel";
-import { ojButtonEventMap } from 'ojs/ojbutton';
-import commonutils from '../utils/commonutils';
 
 class IncidentsViewModel {
 
@@ -32,6 +23,7 @@ class IncidentsViewModel {
   showTable: ko.Observable<Boolean> = ko.observable(false);
 
   constructor() {
+    console.log("team "+CommonUtils.team())
     const promise = CommonUtils.fetchFPLPlayers();
     promise.then(res => {
       this.curr_gw = CommonUtils.curr_gw;
@@ -89,25 +81,34 @@ class IncidentsViewModel {
 
 
     var teams = [
-      { value: 1, label: 'Marathas' },
-      { value: 2, label: 'Chozhas' },
-      { value: 3, label: 'Nizams' },
-      { value: 4, label: 'Mauryas' },
-      { value: 5, label: 'Mughals' },
-      { value: 6, label: 'Khiljis' },
-      { value: 7, label: 'Travancore' },
-      { value: 8, label: 'Nagas' },
-      { value: 9, label: 'Vijayanagara' },
-      { value: 10, label: 'Zamorins' }
+      { value: 1, label: 'Peaky Blinders' },
+      { value: 2, label: 'Reservoir Dogs' },
+      { value: 3, label: 'Brooklyn 6-6' },
+      { value: 4, label: 'Dunder Mifflin' },
+      { value: 5, label: 'Sons of Anarchy' },
+      { value: 6, label: 'Watchmen' },
+      { value: 7, label: 'The Boys' },
+      { value: 8, label: 'True Detectives' },
+      { value: 9, label: 'F.R.I.E.N.D.S' },
+      { value: 10, label: 'Vikings' }
     ];
     this.teamsLovDataProvider = new ArrayDataProvider(teams, { keyAttributes: 'value' });
+    console.log(CommonUtils.team());
+    setTimeout(() => { 
+      this.fetchTableData(CommonUtils.fetchTeamId(CommonUtils.team()));
+    },2000);
   }
 
   valueChangedHandler = (event): void=>{
     this.gainTableList.removeAll();
     console.log(event.detail.value);
-    let map: Map<String, Number> = this.aoeTeamFplTeamMap.get(event.detail.value);
+    this.fetchTableData(event.detail.value)
+  }
+
+  private fetchTableData(teamID : number) {
+    let map: Map<String, Number> = this.aoeTeamFplTeamMap.get(teamID);
     if(map){
+      console.log("inside")
       for (let entry of Array.from(CommonUtils.fplTeamsMap.entries())) {
         let name = entry[1].name;
         let count = map.has(name) ? map.get(name) : 0;

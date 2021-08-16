@@ -14,7 +14,7 @@
           Cap-Sub-VC Count
         </oj-option>
         <oj-option id="aoeEO" value="aoeEO">
-          AOE EO
+          TES EO
         </oj-option>
         <!-- <oj-option id="livePlyrsRem" value="livePlyrsRem">
           Live Players Remaining
@@ -41,7 +41,9 @@
         <oj-list-item-layout>
           <div class="oj-typography-body-md oj-typography-bold">
             <br><b>Team Name:</b>
+            <span :style.color="{{(item.data.teamName === userTeam() ? 'wheat' : 'white')}}">
             <oj-bind-text value="[[item.data.teamName]]"></oj-bind-text>
+            </span>
           </div>
           <div slot="secondary" class="oj-typography-body-sm" style=" white-space:normal;word-wrap:break-word; text-align: left;vertical-align: top;">
             <br><b>Cap Quota : </b><br>
@@ -142,7 +144,7 @@
 
 <oj-bind-if test=[[chipStatusVisible]]>
   <oj-label>
-    <h4 style="color: wheat"><oj-bind-text value="Individual Chip Usage Status (per AOE team)"></oj-bind-text></h4>
+    <h4 style="color: wheat"><oj-bind-text value="Individual Chip Usage Status (per TES team)"></oj-bind-text></h4>
   </oj-label>
 
   <div style="width: 1px; min-width: 100%;">
@@ -152,7 +154,9 @@
           <oj-list-item-layout>
             <div class="oj-typography-body-md oj-typography-bold">
               <b>Team Name :</b>
-              <oj-bind-text value="[[item.data.team]]"></oj-bind-text>
+              <span :style.color="{{(item.data.team === userTeam() ? 'wheat' : 'white')}}">
+                <oj-bind-text value="[[item.data.team]]"></oj-bind-text>
+              </span>
             </div>
             <div slot="secondary" class="oj-typography-body-sm">
               <br><b>WCs Used : </b>

@@ -8,8 +8,8 @@ import { LiveScores } from "../interfaces/livescores";
 
 class CommonUtils{
 
-  aoeTeamsUrl: string = 'https://fopfpl.in/aoe/api/teams';
-  livescoresUrl: string = 'https://fopfpl.in/aoe/api/player_live_scores';
+  aoeTeamsUrl: string = 'https://fopfpl.in/tes/api/teams';
+  livescoresUrl: string = 'https://fopfpl.in/tes/api/player_live_scores';
   aoeTeams: AoeTeam[] = [];
   fplBaseUrl: string = 'https://fantasy.premierleague.com/api/';
   public fplPlayerMap = new Map<Number, Element>();
@@ -122,47 +122,94 @@ class CommonUtils{
         let teamName : string = "";
         switch(team){
           case 1: { 
-            teamName = "Marathas";
+            teamName = "Peaky Blinders";
             break;
           }
           case 2: {
-            teamName = "Chozhas";
+            teamName = "Reservoir Dogs";
             break;
           }
           case 3: {
-            teamName = "Nizams";
+            teamName = "Brooklyn 6-6";
             break;
           }
           case 4: {
-            teamName = "Mauryas";
+            teamName = "Dunder Mifflin";
             break;
           }
           case 5: {
-            teamName = "Mughals";
+            teamName = "Sons of Anarchy";
             break;
           }
           case 6: {
-            teamName = "Khiljis";
+            teamName = "Watchmen";
             break;
           }
           case 7: {
-            teamName = "Travancore";
+            teamName = "The Boys";
             break;
           }
           case 8: {
-            teamName = "Nagas";
+            teamName = "True Detectives";
             break;
           }
           case 9: {
-            teamName = "Vijayanagara";
+            teamName = "F.R.I.E.N.D.S";
             break;
           }
           case 10: {
-            teamName = "Zamorins";
+            teamName = "Vikings";
             break;
           }
         }
         return teamName;
+      }
+
+      fetchTeamId(team: string): number{
+        let teamId : number = 0;
+        switch(team){
+          case "Peaky Blinders": { 
+            teamId = 1;
+            break;
+          }
+          case "Reservoir Dogs": {
+            teamId = 2;
+            break;
+          }
+          case "Brooklyn 6-6": {
+            teamId = 3;
+            break;
+          }
+          case "Dunder Mifflin": {
+            teamId = 4;
+            break;
+          }
+          case "Sons of Anarchy": {
+            teamId = 5;
+            break;
+          }
+          case "Watchmen": {
+            teamId = 6;
+            break;
+          }
+          case "The Boys": {
+            teamId = 7;
+            break;
+          }
+          case "True Detectives": {
+            teamId = 8;
+            break;
+          }
+          case "F.R.I.E.N.D.S": {
+            teamId = 9;
+            break;
+          }
+          case "Vikings": {
+            teamId = 10;
+            break;
+          }
+        }
+        return teamId;
       }
 
       roundToTwo(num) {    

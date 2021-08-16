@@ -3,10 +3,7 @@ import {FplMgrHistory, Chip, Current} from '../interfaces/fplmgrhistory';
 import {AoeTeam} from '../interfaces/aoeteams';
 import {Bonus} from '../interfaces/bonus';
 import {Pick, Picks} from '../interfaces/picks';
-import {FPLBootStrap, Team} from '../interfaces/bootstrap';
 import {FPLTransfers} from '../interfaces/transfers';
-import {EOPojo} from '../interfaces/eopojo';
-import {CapQuota} from '../interfaces/capquota';
 import CommonUtils from '../utils/commonutils';
 import * as ArrayDataProvider from 'ojs/ojarraydataprovider';
 import * as ko from 'knockout';
@@ -25,9 +22,9 @@ class DashboardViewModel {
     currency: "USD",
     maximumFractionDigits: 0,
   });
-  tallyUrl: string = 'https://fopfpl.in/aoe/api/veg_tally';
+  tallyUrl: string = 'https://fopfpl.in/tes/api/veg_tally';
   fplBaseUrl: string = 'https://fantasy.premierleague.com/api/';
-  bonusCandidateUrl: string = 'https://fopfpl.in/aoe/api/bonus_candidate/';
+  bonusCandidateUrl: string = 'https://fopfpl.in/tes/api/bonus_candidate/';
   chipTableList: ko.ObservableArray = ko.observableArray([]);
   chipDataProvider:  ko.Observable = ko.observable();
   transferTableList: ko.ObservableArray = ko.observableArray([]);
@@ -96,12 +93,13 @@ class DashboardViewModel {
         const transPromise = this.fetchTransfers(fpl_id);
         ptpromises.push(picksPromise);
         ptpromises.push(transPromise);
-        picksPromise.then(picksRes =>{
+        picksPromise.then(p3icksRes =>{
         transPromise.then(transRes =>{
           let transMap = <Map<string, string>>transRes;
           let transInConcat: string = '';
           let transOutConcat: string = '';
           for (let transEntry of Array.from(transMap.entries())) {
+            console.log("transMap")
             let transIn = transEntry[0];
             let transOut = transEntry[1];
             if(transInConcat === ''){
@@ -132,10 +130,18 @@ class DashboardViewModel {
             }
           }
           this.aoeGwPlayerTransfers.set(name, "Transfers IN : "+transInConcat+", Transfers OUT : "+transOutConcat);
-        });
+        }).catch(err =>{
+          this.aoeGwPlayerTransfers.set(name, "NA");
+        })
       });
+      if(!this.aoeGwPlayerTransfers.get(name)){
+        this.aoeGwPlayerTransfers.set(name, "NA");
+      }
       }
     })
+    setTimeout(() => { 
+      this.onLoadTransferTable(null);
+    },3000);
   }
 
   private fetchAoeFPLTeamAvgs(){
@@ -150,7 +156,6 @@ class DashboardViewModel {
 
   onLoadTransferTable = (event: ojButtonEventMap['ojAction']) => {
     this.transferTableList.removeAll();
-    
     for (let entry of Array.from(this.aoeGwPlayerTransfers.entries())) {
 
       let currPoints: Number = this.playerRankMap.get(entry[0]).total_points;
@@ -233,7 +238,7 @@ class DashboardViewModel {
   };
 
   private fetchTransfers(fpl_id: number){
-    return new Promise((resolve) =>{
+    return new Promise((resolve, reject) =>{
       let transfersMap = new Map<string, string>();
       let urlFinal: string = 'https://fantasy.premierleague.com/api/entry/'+fpl_id+'/transfers/';
       fetch(urlFinal).then(res => res.json()).
@@ -245,9 +250,10 @@ class DashboardViewModel {
               this.codeMap.set(CommonUtils.fplPlayerMap.get(ele.element_out).web_name, CommonUtils.fplPlayerMap.get(ele.element_out).code);
               transfersMap.set(CommonUtils.fplPlayerMap.get(ele.element_in).web_name, CommonUtils.fplPlayerMap.get(ele.element_out).web_name);
             }
-            console.log("this "+this.codeMap)
             resolve(transfersMap);
           })
+        }).catch(err =>{
+          reject(transfersMap);
         });
     });
   }
@@ -371,7 +377,7 @@ class DashboardViewModel {
   }
 
   private fetchAoeScores(): void{
-    fetch('http://fopfpl.in/aoe/api/game_week/scores').
+    fetch('http://fopfpl.in/tes/api/game_week/scores').
     then(res => res.json())
         .then(res => {        
           let teamMap =  new Map();

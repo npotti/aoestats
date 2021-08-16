@@ -32,51 +32,160 @@ class RRViewModel {
 
   rrList = [
     {
-      name: "Brothers Of Destruction",
-      players: "Hisham & Rohit Dsouza",
-      ids: [1770, 1160],
+      name: "Vikram Vedha",
+      players: "Shankar Hariharan & Albin Antony",
+      ids: [1410674, 19658],
+    },
+    {
+      name: "Fast and Furious",
+      players: "Sagar Chowdhry & Samjad",
+      ids: [9640, 6346],
+    },
+    { name: "Venom", players: "Visisht & Vinu Satheeshan", ids: [104706, 483788] },
+    {
+      name: "The Krishnans",
+      players: "Unnikrishnan  & Hari MS ",
+      ids: [25212, 802492],
+    },
+    {
+      name: "Gangs of Sakthikulangara",
+      players: "Ajith James & Tony Stanley",
+      ids: [63937, 11783],
+    },
+    {
+      name: "Lord of the Ings",
+      players: "Aravind Nair & Visakh Padmanabhan",
+      ids: [7082, 799088],
+    },
+    {
+      name: "701",
+      players: "SVS & Sreejith",
+      ids: [798879, 47043],
+    },
+    {
+      name: "Barsha Boys",
+      players: "Shamnas Rahman & Muhammed Afeef",
+      ids: [115203, 537195],
+    },
+    {
+      name: "Glory Glory ManUnited",
+      players: "Vishnu Raj & Sugeeth",
+      ids: [4026, 825256],
     },
     {
       name: "Jambanum Thumbanum",
-      players: "Rahul Ramesh & Jithin Chandran",
-      ids: [21009, 18717],
-    },
-    { name: "Vikram Vedha", players: "Shankar & Albin", ids: [844010, 431945] },
-    {
-      name: "Vantage 2OLEgends",
-      players: "Appu Sankar V & Sreenath Jayaraj",
-      ids: [10436, 692066],
+      players: "Jithin Chandran & Rahul Ramesh",
+      ids: [1557, 184500],
     },
     {
-      name: "Aluva & Mathicurry",
-      players: "Sherin & Viju",
-      ids: [1015, 2887967],
+      name: "Avengers Assemble",
+      players: "Anand Alwan & Ahammed Shareef ",
+      ids: [4271, 1032],
     },
     {
-      name: "Thirontharam Machambis",
-      players: "Anoop Nair & Aneesh Ajayan",
-      ids: [176438, 5811],
+      name: "Rick and Morty",
+      players: "Yasar Khan & Ashwin Ajith ",
+      ids: [800020, 3272],
+    },
+    { name: "Campeones", 
+    players: "Mahadevan & Appu Sankar V", ids: [102727, 474] },
+    {
+      name: "2 Countries",
+      players: "Mithoon  & Jayakumar",
+      ids: [41891, 8590],
     },
     {
       name: "Lakesiders",
-      players: "Vipin Sreekumar & Rahul R",
-      ids: [14550, 30810],
+      players: "Vipin Sreekumar  & Rahul R",
+      ids: [80727, 19603],
     },
     {
-      name: "Liverpool! Go back!",
-      players: "Vishnu Raj & Sugeeth Gopinathan",
-      ids: [67577, 224691],
+      name: "Tequila gunrisers",
+      players: "Aman Arora & Hari M",
+      ids: [10662, 22245],
+    },
+    {
+      name: "Manavalan and Dharmendra Returns!",
+      players: "Raslam & Namsheed",
+      ids: [78384, 26094],
+    },
+    {
+      name: "Onayum Attinkuttiyum",
+      players: "Sreekuttan S & Feroz Rahman",
+      ids: [807427, 6298],
     },
     {
       name: "Knight & Warrior",
-      players: "Vinay Ashwin & Karthik G",
-      ids: [10422, 23702],
+      players: "Karthik G & Vinay Ashwin",
+      ids: [24222, 4593],
     },
     {
-      name: "Kanu Kepa Secret?",
-      players: "Fawaz Wahid & George Anagnostu",
-      ids: [3121, 1910],
+      name: "Los Guerreros",
+      players: "Afsal BG & Thamjid",
+      ids: [41841, 45285],
     },
+    {
+      name: "Lottulodukkum Gulgulmalum",
+      players: "Joice & Vimal",
+      ids: [78870, 808148],
+    },
+    {
+      name: "The Schadenfreudists",
+      players: "Maanas Gupta & Nitish Potti",
+      ids: [6196, 1534],
+    },
+    {
+      name: "Aluva and Mathicurry ",
+      players: "Sherin & Vijesh",
+      ids: [5987, 3636],
+    },
+    {
+      name: "Thirontharam Machambis",
+      players: "Aneesh Ajayan & Anoop Nair",
+      ids: [30166, 146408],
+    },
+    {
+      name: "Brothers of Destruction",
+      players: "Rohit Dsouza & Hisham Ashraf",
+      ids: [7520, 911],
+    },
+    {
+      name: "Go Corona Go",
+      players: "Vijay Venkatesh & Appu Aravind",
+      ids: [824760, 1521514],
+    },
+    { name: "Kannan Srankum Dashamoolam Damuvum", 
+    players: "Karthik Viswanathan & Alan S Pillai", ids: [1670, 825986] },
+    {
+      name: "2 Countries",
+      players: "Mithoon  & Jayakumar",
+      ids: [41891, 8590],
+    },
+    {
+      name: "AWENGERS",
+      players: "Jithesh Pothera & Adarsh Mahadevan",
+      ids: [6197, 10818],
+    },
+    {
+      name: "The Bro code.",
+      players: "Udaif & Jefin",
+      ids: [8830, 92411],
+    },
+    {
+      name: "Tom and Jerry",
+      players: "Adarsh Nair & Shabeeb",
+      ids: [68, 16073],
+    },
+    {
+      name: "Jojo Dragon United",
+      players: "Sreenath Jayaraj & Anmole Singh",
+      ids: [221087, 40881],
+    },
+    {
+      name: "Padfoot & Prongs",
+      players: "Mithun Nair & Mudit",
+      ids: [3719, 7125],
+    }
   ];
 
   constructor() {
@@ -118,6 +227,8 @@ class RRViewModel {
       const promises2 = [];
       list.forEach((team) => {
         let teamScore = 0;
+        let score1 = 0;
+        let score2 = 0;
         let promiseCh = CommonUtils.fetchFplMgrHistory(team.ids[0]);
         let promiseCh2 = CommonUtils.fetchFplMgrHistory(team.ids[1]);
         promises.push(promiseCh);
@@ -130,8 +241,9 @@ class RRViewModel {
           let gweeks: Current[] = <Current[]>respHist.current;
 
           gweeks.forEach((gw) => {
-            if (gw.event > 28 && gw.event <= 38) {
+            if (gw.event > 0 && gw.event <= 4) {
               teamScore = teamScore + gw.points - gw.event_transfers_cost;
+              score1 = score1 + gw.points - gw.event_transfers_cost;
             }
           });
 
@@ -142,17 +254,28 @@ class RRViewModel {
             let gweeks: Current[] = <Current[]>respHist.current;
 
             gweeks.forEach((gw) => {
-              if (gw.event > 28 && gw.event <= 38) {
+              if (gw.event > 0 && gw.event <= 4) {
                 teamScore = teamScore + gw.points - gw.event_transfers_cost;
+                score2 = score2 + gw.points - gw.event_transfers_cost;
               }
             });
         });
         
         Promise.all(promises).then(res => {
+          let currUser = 'N';
+          if(team.ids[0] === CommonUtils.fplId() || team.ids[1] === CommonUtils.fplId() ){
+            currUser = 'Y';
+          }
+          let playerSplit = team.players.split("&");
             let promise2 = this.pushLiveEle(
                 teamScore,
                 team.name,
-                team.players
+                team.players,
+                score1,
+                score2,
+                playerSplit[0].trim(),
+                playerSplit[1].trim(),
+                currUser
             );
             promises2.push(promise2);
         })
@@ -165,13 +288,18 @@ class RRViewModel {
     });
   }
 
-  private pushLiveEle(score: number, name: String, players: string) {
+  private pushLiveEle(score: number, name: String, players: string, scoreA: number, scoreB: number, playerA: string, playerB : string, loggedInUser: string) {
     return new Promise((accept) => {
       let ele = {
         score: score,
         name: name,
         players: players,
         order: 1,
+        scoreA: scoreA,
+        scoreB: scoreB,
+        playerA : playerA,
+        playerB : playerB,
+        currUser : loggedInUser
       };
       this.rrTableList.push(ele);
       accept(true);
